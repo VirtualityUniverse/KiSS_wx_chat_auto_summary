@@ -235,9 +235,16 @@ def run_chatlog_commands():
             if sys.platform == 'win32':
                 # 获取完整路径
                 chatlog_exe_abs_path = os.path.abspath(chatlog_exe)
+
+                # 确保temp目录存在
+                temp_dir = os.path.join(os.path.dirname(__file__), 'temp')
+                os.makedirs(temp_dir, exist_ok=True)
+
+                # 创建批处理文件
                 # 创建批处理文件临时执行，避免命令行引号嵌套问题
-                batch_file = os.path.join(os.path.dirname(
-                    __file__), 'temp', "run_chatlog_temp.bat")
+                batch_file = os.path.join(temp_dir, "run_chatlog_temp.bat")
+                # batch_file = os.path.join(os.path.dirname(__file__), 'temp', "run_chatlog_temp.bat")
+
                 with open(batch_file, "w") as f:
                     f.write(f'@echo off\n"{chatlog_exe_abs_path}"\npause')
                 # 执行批处理文件
