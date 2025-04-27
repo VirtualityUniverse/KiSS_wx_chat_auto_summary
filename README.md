@@ -43,7 +43,7 @@ KiSS_wx_chat_auto_summary 是一个用于微信群聊天记录的自动提取、
 4. Python环境
    1. 目前采用Python3.11
    2. 需要按照以下依赖：
-      1. `pip install google-generativeai tqdm requests tkinter`
+      1. `pip install google-generativeai tqdm requests`
       2. 此处需要注意：
          1. 【google.generativeai】模块的正式包名为【google-generativeai】。
          2. 安装容易受网络影响失败；可提前准备较好的网络环境、或者多试几次。
