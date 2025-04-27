@@ -246,7 +246,7 @@ def run_chatlog_commands():
                 logger.info("用户确认GUI操作完成")
                 # 添加倒计时进度条
                 print(f"等待数据同步完成，倒计时 {wait_sec} 秒...")
-                with tqdm.tqdm(total=wait_sec, desc="数据同步", unit="秒", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]") as pbar:
+                with tqdm.tqdm(total=wait_sec, desc="数据同步（同步完后可关闭chatlog的GUI窗口）", unit="秒", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]") as pbar:
                     for _ in range(wait_sec):
                         time.sleep(1)
                         pbar.update(1)

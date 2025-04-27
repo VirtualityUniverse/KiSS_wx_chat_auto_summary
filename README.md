@@ -20,6 +20,12 @@ KiSS_wx_chat_auto_summary 是一个用于微信群聊天记录的自动提取、
 2、获取到聊天记录之后，使用【Google 的 Gemini 2.5 Pro 大模型的API】，来根据【特定prompt】，对【聊天记录】进行分析、并生成一个html的
 文件。
 
+## 最终效果示例
+
+![image-20250427085839410](markdown/README/image-20250427085839410.png)
+
+
+
 ## 实现流程
 
 ### 最小化实现步骤
@@ -33,11 +39,15 @@ KiSS_wx_chat_auto_summary 是一个用于微信群聊天记录的自动提取、
    - 开启"自动更新"选项
    - 确认微信识别状态为"online"
    - 记录"Data Dir"和"Work Dir"路径值
-
+   - 配图示意：
+     - ![image-20250427085224822](markdown/README/image-20250427085224822.png)
+   
 3. **配置 cfg.py 文件**
    - 填入 Data Dir 和 Work Dir 路径
    - 设置其他必要配置项
-
+   - 图片示意：
+     - ![image-20250427085659847](markdown/README/image-20250427085659847.png)
+   
 4. **运行程序**
    - 执行 `python demo.py`
    - 程序将生成 HTML 格式总结报告
