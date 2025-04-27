@@ -172,3 +172,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+
+
+
+# Custom by User
+/.idea
+
