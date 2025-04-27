@@ -54,25 +54,34 @@ KiSS_wx_chat_auto_summary 是一个用于微信群聊天记录的自动提取、
 
 ### 最小化实现步骤
 
-1. **下载 chatlog 工具**
+1. 总结：
+```mermaid
+graph TD
+    A[检查chatlog情况] --> B[修改cfg.py配置]
+    B --> C[启动demo.py]
+    C -->|如需依赖| D[安装依赖]
+    D --> C
+```
+
+2. **下载 chatlog 工具**
    - 从 [GitHub Releases](https://github.com/sjzar/chatlog/releases) 下载最新版本
    - 解压获取 chatlog.exe 到指定目录
 
-2. **首次配置**
+3. **首次配置**
    - 打开 chatlog GUI 界面
    - 开启"自动更新"选项
    - 确认微信识别状态为"online"
    - 记录"Data Dir"和"Work Dir"路径值
    - 配图示意：
      - ![image-20250427085224822](markdown/README/image-20250427085224822.png)
-   
-3. **配置 cfg.py 文件**
+
+4. **配置 cfg.py 文件**
    - 填入 Data Dir 和 Work Dir 路径
    - 设置其他必要配置项
    - 图片示意：
      - ![image-20250427085659847](markdown/README/image-20250427085659847.png)
-   
-4. **运行程序**
+
+5. **运行程序**
    - 执行 `python demo.py`
      - 这是最简单的方式，配置都放在 `cfg.py`  。
    - 程序将生成 HTML 格式总结报告
