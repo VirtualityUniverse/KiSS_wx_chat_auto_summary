@@ -1,0 +1,152 @@
+任务：根据提供的微信群聊天记录（txt格式）生成群消息总结，输出为风格固定、一致的HTML页面，适合截图分享
+
+## 自动提取信息
+系统将自动从您提供的聊天记录中提取以下信息：
+- 群名称：将从聊天记录的系统通知或常见群聊信息中提取
+- 日期范围：根据记录中的所有日期自动生成（格式：YYYY-MM-DD ~ YYYY-MM-DD）
+- 时间范围：根据记录中的首条和末条消息时间确定
+
+## 日报模式选择
+- 日报模式：[完整版/简化版] (默认为完整版)
+- 如果需要简化版，请在提交时注明"生成简化版日报"
+
+## 简化版说明
+如选择"简化版"，将只生成以下核心部分：
+- 时段讨论热点（最多3个）
+- 重要消息汇总
+- 话唠榜（仅前3名）
+- 简化版词云
+日报内容更精简，适合快速浏览和分享。
+
+## 聊天记录支持格式
+支持以下多种常见格式：
+- "[时间] 昵称：消息内容"
+- "时间 - 昵称：消息内容"
+- "昵称 时间：消息内容"
+- 其他合理的时间和昵称分隔格式
+
+如未能识别消息格式或未找到有效记录，将显示提示信息并尝试按最佳猜测处理。
+
+## 输出要求
+
+请参照以下的设计风格，生成用于可视化的1.单一HTML文件
+```
+《知乎的设计风格》
+
+**核心目标：** 复现知乎网站 (zhihu.com) 当前版本的桌面端 Web UI 设计风格与结构。
+
+---
+
+**Prompt 1: 整体风格与布局框架 (Overall Style & Layout Framework)**
+
+```prompt
+Generate the UI design layout for a content-focused web application homepage, aiming to precisely replicate the visual style and structural organization of the current Zhihu.com desktop website.
+
+Key characteristics to emulate:
+1.  **Layout:** Primarily a three-column structure:
+    *   **Left Column (Narrow):** Fixed or sticky navigation/filter panel (e.g., "关注", "推荐", "热榜", "视频").
+    *   **Center Column (Wide):** Main content feed area displaying scrollable content cards (answers, articles).
+    *   **Right Column (Medium):** Sidebar containing auxiliary modules (e.g., user profile summary, "创作中心" links, recommended content, advertisements, footer links).
+2.  **Header:** A full-width, fixed or sticky header containing the logo, a prominent search bar, primary navigation icons/links (Home, Explore, etc.), and user-specific icons (notifications, messages, profile avatar) plus a "提问" or "创作" button.
+3.  **Color Palette:** Dominated by white (#FFFFFF) and light gray (#F6F6F6 or similar) backgrounds, with a characteristic primary blue (#0084FF) used for links, buttons, active states, and highlights. Text colors are primarily dark gray/black (#1A1A1A, #333333) for readability and lighter grays (#8590A6, #999999) for metadata.
+4.  **Visual Style:** Clean, modern, relatively flat design, but utilize subtle box-shadows on cards and the header to create depth and separation. Prioritize information density while maintaining clarity through whitespace.
+5.  **Typography:** Use a clean, readable sans-serif font family (similar to PingFang SC, Microsoft YaHei, Helvetica Neue, Arial). Establish clear hierarchy using font size (e.g., 18-20px bold for titles, 14-15px for body, 12-13px for metadata) and weight.
+
+The overall impression should be functional, content-centric, and immediately recognizable as Zhihu's style.
+```
+
+---
+
+**Prompt 2: 核心内容卡片 (Feed Item Card - Answer/Article)**
+
+```prompt
+Design a single content card component for the main feed, representing either an answer to a question or an article, mirroring the Zhihu feed item style.
+
+Component breakdown:
+1.  **Container:** A rectangular card with a white background (#FFFFFF), subtle border (e.g., 1px solid #EBEBEB) or a light box-shadow (e.g., 0 1px 3px rgba(0,0,0,0.1)). Ensure ~15-20px internal padding.
+2.  **Author Info (Top):** Small circular user avatar (~24-38px), followed by the author's name (clickable, standard text color) and potentially a short bio/tagline (lighter gray text).
+3.  **Question Title (If applicable):** Displayed prominently above the answer content, usually in bold, slightly larger font size (e.g., 18px).
+4.  **Content Snippet:** Show the beginning of the answer/article text (standard body font size, e.g., 15px, dark gray). Include a "阅读全文" (Read More) link/button if the content is truncated, often styled in the primary blue (#0084FF). Images or video thumbnails might be included within the snippet area.
+5.  **Action Bar (Bottom):** A row of interactive icons/buttons with counts:
+    *   Upvote/Agree button (often shows count, can be blue when active).
+    *   Downvote/Disagree button.
+    *   Comment icon (with comment count).
+    *   Share icon.
+    *   Favorite/Collect icon.
+    *   Possibly a "感谢" (Thanks) or other specific actions.
+    *   Icons should be simple, line-style, gray (#8590A6 or similar), potentially turning blue on hover or when activated. Use small font size for counts.
+
+Ensure clear visual separation between these sections within the card using spacing and typographic hierarchy.
+```
+
+---
+
+**Prompt 3: 网站头部 (Header Component)**
+
+```prompt
+Detail the design of the website's persistent header component, matching Zhihu's header.
+
+Elements to include, arranged horizontally:
+1.  **Left:** Zhihu Logo (the blue Chinese characters "知乎").
+2.  **Center:**
+    *   Primary Navigation Links/Icons (e.g., "首页", "发现", "等你来答"). Use text or icons, with a clear visual indicator (e.g., blue underline or background) for the active page.
+    *   A prominent, wide Search Bar with placeholder text (e.g., "搜索知乎内容 / 用户"). Include a search icon button. The search bar should have a light gray border or background.
+3.  **Right:**
+    *   Notification icon (bell).
+    *   Messages icon (envelope/chat bubble).
+    *   User Avatar (small circle). Clicking this usually reveals a dropdown menu.
+    *   A primary action button, typically solid blue (#0084FF) with white text (e.g., "提问" or "写回答").
+
+The header should have a white or very light gray background and potentially a subtle bottom border or shadow to separate it from the content below. Maintain consistent vertical alignment and spacing.
+```
+
+---
+
+**Prompt 4: 右侧边栏模块 (Right Sidebar Module)**
+
+```prompt
+Design a typical module card for the right sidebar, replicating Zhihu's sidebar elements like "创作中心", "相关问题", or "今日热榜".
+
+Module characteristics:
+1.  **Container:** Card structure similar to feed items (white background, subtle border/shadow), or sometimes just separated by lines.
+2.  **Module Title:** Clear title text (e.g., "我的创作", "相关推荐") at the top, often slightly bolder or larger than list item text. May have an associated icon.
+3.  **Content Area:** Typically a list of links, text items, or small summaries.
+    *   For lists (e.g., "相关问题"): Simple text links, perhaps with view counts or brief context.
+    *   For user stats/links (e.g., "创作中心"): Icons paired with text links (e.g., icon for "我的草稿", "数据分析").
+    *   For ads or promotions: May include images and specific call-to-action buttons.
+4.  **Footer (Optional):** Some modules might have a "查看更多" (View More) link at the bottom.
+
+Maintain consistent padding and typography matching the rest of the site's style.
+```
+
+---
+
+**Prompt 5: 交互元素样式 (Interactive Element Styling - Buttons, Inputs, Links)**
+
+```prompt
+Define the specific visual styling for common interactive elements based on Zhihu's design language.
+
+1.  **Primary Buttons:** Solid background in the main blue color (#0084FF), white text, slightly rounded corners (e.g., 3-4px border-radius), standard padding. Hover state: slightly darker blue or subtle brightness change.
+2.  **Secondary/Outline Buttons:** Transparent or white background, blue (#0084FF) text and border, same rounded corners and padding. Hover state: background might fill with a very light blue, or text/border gets slightly darker/brighter.
+3.  **Text Links:** Standard text color by default, changing to the primary blue (#0084FF) on hover, possibly with an underline appearing on hover.
+4.  **Input Fields (e.g., Search Bar, Login Form):** Rectangular shape, light gray border (#CCCCCC or #DBDBDB), white background, standard padding inside. Placeholder text in light gray. Focus state: border might turn blue (#0084FF) or have a subtle blue glow/outline.
+5.  **Tabs/Navigation Items:** Clear visual distinction for the active tab/item, usually using the primary blue (#0084FF) for text, an underline, or a background highlight. Hover states should provide feedback.
+6.  **Icons:** Generally use a consistent set of simple, line-art icons (like Font Awesome, Material Icons, or custom). Default color often gray (#8590A6, #999999), turning blue or darker gray on hover/activation where appropriate.
+
+Apply these styles consistently across all relevant components.
+```
+
+---
+
+**如何使用这些 Prompt:**
+
+1.  **逐步生成:** 可以先用 Prompt 1 生成整体布局和风格基调，然后用 Prompt 2-5 细化具体组件。
+2.  **组合使用:** 对于能力更强的 AI，可以将多个 Prompt 的关键信息组合起来，形成一个更全面的指令。
+3.  **针对特定页面:** 如果你想重绘特定页面（如问题详情页、用户个人主页），可以在 Prompt 1 的基础上，调整布局描述，并重点应用相关的组件 Prompt (如 Prompt 2 用于答案列表，Prompt 4 可能用于用户信息卡片)。
+4.  **迭代优化:** AI 的首次输出可能不完美。根据结果，调整 Prompt 中的细节（比如颜色代码、字体大小、阴影强度、元素间距），然后重新生成。可以加入 "Make the shadows more subtle" 或 "Increase the font size of the question title" 等微调指令。
+5.  **提供参考:** 如果 AI 支持，可以明确告诉它参考 `www.zhihu.com` 的当前设计。
+
+
+```
+
+

@@ -1,0 +1,77 @@
+任务：根据提供的微信群聊天记录（txt格式）生成群消息总结，输出为风格固定、一致的HTML页面，适合截图分享
+
+## 自动提取信息
+系统将自动从您提供的聊天记录中提取以下信息：
+- 群名称：将从聊天记录的系统通知或常见群聊信息中提取
+- 日期范围：根据记录中的所有日期自动生成（格式：YYYY-MM-DD ~ YYYY-MM-DD）
+- 时间范围：根据记录中的首条和末条消息时间确定
+
+## 日报模式选择
+- 日报模式：[完整版/简化版] (默认为完整版)
+- 如果需要简化版，请在提交时注明"生成简化版日报"
+
+## 简化版说明
+如选择"简化版"，将只生成以下核心部分：
+- 时段讨论热点（最多3个）
+- 重要消息汇总
+- 话唠榜（仅前3名）
+- 简化版词云
+日报内容更精简，适合快速浏览和分享。
+
+## 聊天记录支持格式
+支持以下多种常见格式：
+- "[时间] 昵称：消息内容"
+- "时间 - 昵称：消息内容"
+- "昵称 时间：消息内容"
+- 其他合理的时间和昵称分隔格式
+
+如未能识别消息格式或未找到有效记录，将显示提示信息并尝试按最佳猜测处理。
+
+## 输出要求
+
+请参照以下的设计风格，生成用于可视化的1.单一HTML文件
+```
+《小红书的设计风格》
+
+
+
+**核心要素 Prompt (抓住灵魂):**
+
+1.  **简洁版:**
+    `Website UI design, clean and modern, inspired by Xiaohongshu (Little Red Book) web version. Focus on a multi-column masonry/waterfall grid layout displaying high-quality lifestyle images and short text. Prominent search bar. White background, accents of red/pink. --ar 16:9`
+    *   中文解读：网站UI设计，简洁现代风格，灵感来自小红书网页版。重点是多列砌体/瀑布流网格布局，展示高质量的生活方式图片和短文本。显眼的搜索栏。白色背景，点缀红色/粉色。画面宽高比16:9。
+
+2.  **强调内容和氛围:**
+    `Visually driven website UI, capturing the aesthetic of Xiaohongshu web. Showcase a feed of user-generated content (fashion, beauty, food, travel) in rounded-corner cards arranged in a waterfall grid. Bright, airy feel with ample whitespace. Minimalist top navigation bar. Sans-serif typography. --ar 16:9`
+    *   中文解读：视觉驱动的网站UI，捕捉小红书网页版的美学风格。展示用户生成内容（时尚、美妆、美食、旅行）的信息流，内容卡片使用圆角，排列成瀑布流网格。明亮、通透的感觉，有充足的留白。极简风格的顶部导航栏。无衬线字体。画面宽高比16:9。
+
+**详细描述 Prompt (追求精准):**
+
+3.  **结构与布局:**
+    `Web interface design replicating Xiaohongshu's desktop layout. Key elements: 1. Top navigation bar: centered search input, logo on left, user profile/login icons on right. 2. Main content area: a responsive multi-column (3-5 columns typical) masonry/waterfall grid. 3. Content Cards: Rectangular with rounded corners, containing a primary image/video filling the top portion, followed by a short title, author avatar & username, and engagement icons (like, collect). Generous padding and margins. --ar 16:9`
+    *   中文解读：复刻小红书桌面端布局的网页界面设计。关键元素：1. 顶部导航栏：居中搜索框，左侧Logo，右侧用户头像/登录图标。2. 主要内容区：响应式的多列（通常3-5列）砌体/瀑布流网格。3. 内容卡片：圆角矩形，顶部是主要图片/视频，下方是短标题、作者头像和用户名、互动图标（点赞、收藏）。充足的内边距和外边距。画面宽高比16:9。
+
+4.  **风格与细节:**
+    `UI Design Screenshot: A webpage identical in style to Xiaohongshu.com. Features: Clean white/light gray background (#FFFFFF, #F9F9F9). Signature Xiaohongshu red (#FF2442) used sparingly for accents (icons, buttons). Modern, legible sans-serif font (like PingFang SC or Helvetica Neue). Flat design principles with subtle shadows on cards for depth. Minimalist, outlined icons for like, collect, comment, share. High-resolution, aesthetically pleasing images dominate the cards. --ar 16:9`
+    *   中文解读：UI设计截图：一个风格与 Xiaohongshu.com 完全一致的网页。特点：干净的白色/浅灰色背景 (#FFFFFF, #F9F9F9)。标志性的小红书红 (#FF2442) 少量用于点缀（图标、按钮）。现代、清晰易读的无衬线字体（如苹方SC或Helvetica Neue）。扁平化设计原则，卡片带微弱阴影以增加层次感。极简的线框图标用于点赞、收藏、评论、分享。高分辨率、美观的图片主导卡片内容。画面宽高比16:9。
+
+**聚焦特定区域 Prompt:**
+
+5.  **仅关注信息流卡片:**
+    `Close-up on content cards from a Xiaohongshu-style website feed. Waterfall grid arrangement. Each card: rounded corners, large lifestyle image (e.g., fashion OOTD), short bold title below image, small author avatar and username, row of subtle like/collect icons at the bottom. Clean separation between elements. --ar 9:16` (如果想模拟单卡竖屏感) 或 `--ar 1:1`
+    *   中文解读：小红书风格网站信息流的内容卡片特写。瀑布流排列。每个卡片：圆角，大的生活方式图片（例如，时尚穿搭 OOTD），图片下方是短加粗标题，小的作者头像和用户名，底部是一行低调的点赞/收藏图标。元素之间分隔清晰。宽高比9:16或1:1。
+
+6.  **仅关注顶部导航栏:**
+    `Website header/navigation bar design, mimicking Xiaohongshu web. Centered, pill-shaped search bar with placeholder text. Minimalist logo on the far left. User profile icon, notification bell, and upload button icons on the far right. Clean white background. Subtle divider line below. --ar 16:2`
+    *   中文解读：模仿小红书网页版的网站头部/导航栏设计。居中的胶囊形状搜索栏，带有占位符文本。极简Logo在最左侧。用户头像图标、通知铃铛、发布按钮图标在最右侧。干净的白色背景。下方有细微分割线。宽高比16:2。
+
+**附加建议和修饰词:**
+
+*   **可以加入的风格词:** `minimalist`, `bright`, `airy`, `clean`, `modern`, `user-friendly`, `content-focused`, `visually appealing`, `fashionable`, `lifestyle-oriented`.
+*   **可以排除的词 (Negative Prompts):** `--no dark mode`, `--no clutter`, `--no outdated design`, `--no complex backgrounds`, `--no serif fonts`.
+*   **指定细节:** 如果你知道具体的字体名称、颜色代码，可以直接加入 (虽然AI不一定能精确识别，但有参考价值)。
+*   **迭代优化:** AI生成不一定一次成功，你可能需要根据生成结果调整Prompt，比如强调某个元素、改变布局描述、或者调整风格词。
+
+```
+
+

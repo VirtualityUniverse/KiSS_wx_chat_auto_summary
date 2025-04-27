@@ -1,0 +1,104 @@
+任务：根据提供的微信群聊天记录（txt格式）生成群消息总结，输出为风格固定、一致的HTML页面，适合截图分享
+
+## 自动提取信息
+系统将自动从您提供的聊天记录中提取以下信息：
+- 群名称：将从聊天记录的系统通知或常见群聊信息中提取
+- 日期范围：根据记录中的所有日期自动生成（格式：YYYY-MM-DD ~ YYYY-MM-DD）
+- 时间范围：根据记录中的首条和末条消息时间确定
+
+## 日报模式选择
+- 日报模式：[完整版/简化版] (默认为完整版)
+- 如果需要简化版，请在提交时注明"生成简化版日报"
+
+## 简化版说明
+如选择"简化版"，将只生成以下核心部分：
+- 时段讨论热点（最多3个）
+- 重要消息汇总
+- 话唠榜（仅前3名）
+- 简化版词云
+日报内容更精简，适合快速浏览和分享。
+
+## 聊天记录支持格式
+支持以下多种常见格式：
+- "[时间] 昵称：消息内容"
+- "时间 - 昵称：消息内容"
+- "昵称 时间：消息内容"
+- 其他合理的时间和昵称分隔格式
+
+如未能识别消息格式或未找到有效记录，将显示提示信息并尝试按最佳猜测处理。
+
+## 输出要求
+
+请参照以下的设计风格，生成用于可视化的单一HTML文件
+```
+《苹果官网的设计风格》
+
+**核心原则：** 始终强调 **简洁 (Cleanliness)、高端 (Premium)、留白 (Whitespace)、清晰的层级 (Clear Hierarchy) 和以产品为中心 (Product-centric)**。
+
+**一、 整体风格与布局 (Overall Style & Layout)**
+
+*   **基础风格 Prompt:**
+    > "Generate a website UI mockup in the **Apple design language**. Emphasize **minimalism, generous white space (negative space), and a premium, sophisticated feel**. Use a **neutral color palette** (primarily white, light gray, dark gray/black) with subtle accents. Focus on **high-resolution, photorealistic product imagery** as the centerpiece. Ensure **perfect grid alignment** and **clear visual hierarchy** through typography and spacing. The overall mood should be **modern, clean, and user-friendly**."
+    >
+    > (生成一个采用 **苹果设计语言** 的网站UI模型图。强调 **极简主义、充足的留白（负空间）和高端、精致的感觉**。使用 **中性色调**（主要是白色、浅灰、深灰/黑色）并搭配微妙的点缀色。焦点放在 **高分辨率、照片般逼真的产品图像** 上。确保 **完美的网格对齐** 和通过字体排印与间距实现的 **清晰视觉层级**。整体氛围应是 **现代、简洁、用户友好** 的。)
+
+*   **布局结构 Prompt:**
+    > "Design a **full-width website layout** typical of Apple.com. Structure it with distinct horizontal sections. Employ a **centered content alignment** within most sections. Utilize a **responsive grid system** ensuring consistency across different screen sizes (desktop view). Focus on **ample padding and margins** between elements and sections."
+    >
+    > (设计一个典型的Apple.com **全宽网站布局**。用清晰的水平区块构建结构。在大多数区块内采用 **居中内容对齐**。使用 **响应式网格系统**，确保在不同屏幕尺寸（桌面视图）下的一致性。注重元素与区块之间 **充足的内边距和外边距**。)
+
+**二、 关键组件 (Key Components)**
+
+*   **导航栏 (Navigation Bar):**
+    > "Create a **minimalist website navigation header**. Use a **subtle background** (light gray or semi-transparent dark). Feature the **Apple logo centered or left-aligned**, followed by **widely spaced text links** (e.g., Store, Mac, iPad, iPhone, Watch, Vision, AirPods, TV & Home, Entertainment, Accessories, Support) in the **San Francisco Pro font (or similar clean sans-serif)**. Include minimalist icons for **Search and Shopping Bag** on the right. Ensure **delicate hover effects**."
+    >
+    > (创建一个 **极简主义网站导航栏**。使用 **微妙的背景**（浅灰或半透明深色）。包含 **居中或左对齐的苹果Logo**，后面跟着 **宽间距的文本链接**（例如：商店、Mac、iPad、iPhone、Watch、Vision、AirPods、家居、娱乐、配件、支持），字体使用 **San Francisco Pro（或类似的简洁无衬线字体）**。右侧包含 **搜索和购物袋的极简图标**。确保 **精妙的悬停效果**。)
+
+*   **英雄区域/首屏 (Hero Section):**
+    > "Design a website **hero section** showcasing a new product (e.g., iPhone 15 Pro). Feature a **large, high-quality, edge-to-edge product photograph or subtle video loop** with a clean background. Overlay **centered, large, bold headline text** (e.g., 'iPhone 15 Pro') and a **smaller sub-headline** (e.g., 'Titanium. So strong. So light. So Pro.') below it. Include **two call-to-action links** styled as simple text with chevrons (e.g., 'Learn more >', 'Buy >'). Maintain significant **vertical spacing**."
+    >
+    > (设计一个网站 **英雄区域（首屏主视觉）**，展示一款新产品（例如 iPhone 15 Pro）。采用一张 **巨大、高质量、边缘到边缘的产品照片或微妙的视频循环**，背景干净。叠加 **居中的、大号、粗体的标题文本**（例如：“iPhone 15 Pro”）及其下方的 **较小的副标题**（例如：“钛金属。如此坚固。如此轻盈。如此 Pro。”）。包含 **两个号召性用语链接**，样式为带尖括号的简单文本（例如：“进一步了解 >”，“购买 >”）。保持显著的 **垂直间距**。)
+
+*   **产品特性/网格区块 (Product Feature / Grid Section):**
+    > "Create a section displaying multiple products or features using a **clean grid layout** (e.g., 2x2 or full-width alternating). Each item should be presented in a **minimalist card style** with **ample internal padding**. Cards contain a **high-quality product image**, a **concise title**, a **short description**, and 'Learn more'/'Buy' links. Ensure **uniform spacing** between grid items. Use **subtle borders or background differentiation** if necessary."
+    >
+    > (创建一个使用 **简洁网格布局**（例如2x2或全宽交替）展示多个产品或特性的区块。每个项目应以 **极简卡片样式** 呈现，并带有 **充足的内部填充**。卡片包含 **高质量产品图**、**简洁的标题**、**简短描述** 以及“进一步了解”/“购买”链接。确保网格项之间 **间距统一**。如有必要，使用 **细微的边框或背景区分**。)
+
+*   **页脚 (Footer):**
+    > "Design a **comprehensive website footer** with a **dark gray background**. Organize links into **multiple columns** under clear headings (e.g., Shop and Learn, Apple Wallet, Account, Entertainment, Apple Store, For Business, For Education, For Healthcare, Apple Values, About Apple). Include **copyright information, privacy policy links, terms of use, site map, and region selector** at the bottom. Use **smaller font sizes** than the main content but maintain **readability and clear spacing**."
+    >
+    > (设计一个 **内容详尽的网站页脚**，采用 **深灰色背景**。将链接按明确的标题（例如：选购及了解、Apple钱包、账户、娱乐、Apple Store零售店、商务应用、教育应用、健康应用、Apple价值观、关于Apple）分 **多列组织**。底部包含 **版权信息、隐私政策链接、使用条款、网站地图和地区选择器**。使用比主要内容 **更小的字号**，但保持 **可读性和清晰的间距**。)
+
+**三、 核心元素细节 (Core Element Details)**
+
+*   **字体排印 (Typography):**
+    > "Apply typography consistent with Apple's style. Use **San Francisco Pro (SF Pro Text, SF Pro Display) or a very similar clean, legible sans-serif font family**. Establish a strong **typographic hierarchy** using **different weights (light, regular, bold) and sizes**. Headlines should be **large and impactful**, body text **readable and well-spaced (generous line-height)**. Text color primarily **dark gray or black on light backgrounds**, and **white or light gray on dark backgrounds**."
+    >
+    > (应用符合苹果风格的字体排印。使用 **San Francisco Pro（SF Pro Text, SF Pro Display）或非常相似的简洁、易读的无衬线字体家族**。通过 **不同的字重（细体、常规、粗体）和字号** 建立强大的 **字体层级**。标题应 **大而醒目**，正文文本 **易读且间距适宜（行高充足）**。文本颜色在浅色背景上主要为 **深灰或黑色**，在深色背景上为 **白色或浅灰**。)
+
+*   **颜色 (Color):**
+    > "Strictly adhere to a **neutral primary color palette**: predominantly **white (#FFFFFF)**, light grays (e.g., #F5F5F7), and dark grays/black (e.g., #1D1D1F). Use **color sparingly** for accents, primarily for **call-to-action buttons (often a specific blue, e.g., #007AFF)** or to reflect **product colors**. Avoid complex gradients; if used, they must be **extremely subtle**."
+    >
+    > (严格遵守 **中性的主色调**：主要是 **白色 (#FFFFFF)**、浅灰色（例如 #F5F5F7）和深灰色/黑色（例如 #1D1D1F）。**谨慎使用颜色** 作为点缀，主要用于 **号召性用语按钮（通常是特定的蓝色，例如 #007AFF）** 或反映 **产品本身的颜色**。避免复杂的渐变；如果使用，必须 **极其微妙**。)
+
+*   **图像与图标 (Imagery & Icons):**
+    > "All imagery must be **exceptionally high-quality, professional, and photorealistic**, often featuring products **isolated on clean backgrounds** or in **aspirational lifestyle contexts**. Icons should be **minimalist, line-style or subtly filled**, perfectly aligned, and used purposefully (e.g., navigation, feature highlights)."
+    >
+    > (所有图像必须 **品质极高、专业、照片般逼真**，通常展示 **在干净背景上隔离的产品** 或在 **理想化的生活方式场景** 中。图标应 **极简、线条风格或轻微填充**，完美对齐，并有目的地使用（例如导航、特性亮点）。)
+
+*   **交互与动效 (Interaction & Animation):**
+    > "Incorporate **subtle and smooth animations and transitions**. Examples include **gentle fade-ins** on scroll, **smooth hover effects** on links and buttons (e.g., slight dimming or color change), and **polished micro-interactions**. Avoid flashy or jarring effects. Focus on **enhancing usability and perceived quality**."
+    >
+    > (融入 **微妙流畅的动画和过渡效果**。例如滚动时的 **柔和淡入**，链接和按钮上 **平滑的悬停效果**（例如轻微变暗或颜色变化），以及 **精细的微交互**。避免花哨或突兀的效果。专注于 **提升可用性和感知质量**。)
+
+**使用建议:**
+
+1.  **组合使用:** 根据你需要生成的具体页面或组件，组合相关的Prompt。例如，生成首页可能需要组合“整体风格”、“布局结构”、“导航栏”、“英雄区域”和“产品网格”的Prompt。
+2.  **迭代优化:** AI可能不会第一次就完美理解，需要根据生成结果调整Prompt，增加或修改关键词。例如，如果留白不够，可以加强 `emphasize generous white space` 或 `increase padding significantly`。
+3.  **指定细节:** 如果需要特定产品或文字，直接在Prompt中替换示例内容。
+4.  **针对工具调整:** 不同的AI工具可能对关键词的理解不同，可能需要尝试同义词或更具体的描述（例如，直接指定颜色代码、字体名称）。对于图像生成器，可能还需要加入 `--style raw` 或 `--ar 16:9` 等参数。
+5.  **关注视觉，而非代码:** 这些Prompt主要用于生成视觉设计稿或概念图。它们不能直接生成HTML/CSS/JS代码，但能为开发者提供极其清晰的视觉蓝图。
+
+```
+
+

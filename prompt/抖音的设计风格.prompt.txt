@@ -1,0 +1,99 @@
+任务：根据提供的微信群聊天记录（txt格式）生成群消息总结，输出为风格固定、一致的HTML页面，适合截图分享
+
+## 自动提取信息
+系统将自动从您提供的聊天记录中提取以下信息：
+- 群名称：将从聊天记录的系统通知或常见群聊信息中提取
+- 日期范围：根据记录中的所有日期自动生成（格式：YYYY-MM-DD ~ YYYY-MM-DD）
+- 时间范围：根据记录中的首条和末条消息时间确定
+
+## 日报模式选择
+- 日报模式：[完整版/简化版] (默认为完整版)
+- 如果需要简化版，请在提交时注明"生成简化版日报"
+
+## 简化版说明
+如选择"简化版"，将只生成以下核心部分：
+- 时段讨论热点（最多3个）
+- 重要消息汇总
+- 话唠榜（仅前3名）
+- 简化版词云
+日报内容更精简，适合快速浏览和分享。
+
+## 聊天记录支持格式
+支持以下多种常见格式：
+- "[时间] 昵称：消息内容"
+- "时间 - 昵称：消息内容"
+- "昵称 时间：消息内容"
+- 其他合理的时间和昵称分隔格式
+
+如未能识别消息格式或未找到有效记录，将显示提示信息并尝试按最佳猜测处理。
+
+## 输出要求
+
+请参照以下的设计风格，生成用于可视化的1.单一HTML文件
+```
+《抖音的设计风格》
+
+**核心理念：** 从整体布局、色彩风格、关键组件、交互元素、字体图标等维度进行拆解和描述。
+
+**目标平台：** 网页浏览器（桌面端）
+
+---
+
+**一、 整体布局与结构 (Overall Layout & Structure)**
+
+*   **基础:**
+    *   `A high-fidelity UI mockup of a social media video feed website, desktop browser view, heavily inspired by Douyin/TikTok web version.`
+    *   `Web interface design for a short-video platform resembling Douyin's website structure.`
+*   **强调布局:**
+    *   `UI design featuring a primary vertical video feed occupying the central content area, a fixed left sidebar for navigation (e.g., 'For You', 'Following', 'Explore'), and potentially a minimal top header. Desktop view.`
+    *   `Website layout with a dominant central video player for vertically scrolling short videos, persistent left navigation menu with icons and text labels, dark theme. Modern social media UI.`
+*   **带内容示例:**
+    *   `Screenshot of a social video website UI in dark mode. Shows a large vertical video playing in the center, user profile info (avatar, name, follow button) overlaid on the left/bottom of the video. Engagement icons (like, comment, share) vertically aligned on the right side of the video. Left sidebar shows navigation links like 'Discover', 'Live'. Mimics Douyin web style.`
+
+**二、 色彩与风格 (Color & Style)**
+
+*   **核心风格:**
+    *   `Dark mode UI design, predominantly black or very dark gray background (#161823), white or light gray text for high contrast. Minimalist and modern aesthetic.`
+    *   `UI style guide elements for a Douyin-like website: Dark theme palette, vibrant accent colors (e.g., subtle red for notifications or likes), clean lines, flat design elements.`
+*   **加入氛围:**
+    *   `Sleek, immersive dark theme UI for a video content platform. Focus on visual content prominence. Professional, engaging, youthful web design.`
+    *   `Visual style: High contrast dark mode, flat icons, sharp typography, similar to the TikTok/Douyin web interface aesthetic.`
+
+**三、 关键组件 (Key Components)**
+
+*   **视频播放器区域:**
+    *   `Detailed view of the central video player component for a Douyin-style website. Vertical video aspect ratio. Overlay elements include user avatar, username, video description/caption with hashtags, music/sound information link at the bottom.`
+    *   `UI element: Video interaction panel positioned typically on the right side of the video player. Includes icons for Like (heart), Comment (speech bubble), Share (arrow), possibly Save/Favorite. Display interaction counts next to icons.`
+*   **左侧导航栏:**
+    *   `UI component: Fixed left sidebar navigation menu. Uses flat, line-style icons paired with text labels (e.g., Home, Friends, Profile). Active state highlighted. Dark background, light text/icons.`
+*   **评论区 (可能在右侧或弹出):**
+    *   `UI design for a comment section panel, typically appearing to the right of the video content on desktop. Shows user avatars, usernames, comment text, timestamps, like counts for comments. Clean, scrollable list format within the dark theme.`
+*   **顶部导航/搜索 (如果需要):**
+    *   `Minimal top header bar UI for a dark-themed website. Includes a logo on the left, a search bar in the center/right, and user profile/upload buttons on the far right.`
+
+**四、 字体与图标 (Typography & Iconography)**
+
+*   **字体:**
+    *   `UI using a clean, modern sans-serif font family (similar to Proxima Nova, Helvetica Neue, or system default sans-serifs). Legible font sizes, good hierarchy between titles, body text, and metadata.`
+    *   `Typography details: Crisp sans-serif fonts, appropriate line spacing, clear visual hierarchy for usernames, captions, hashtags, and UI labels.`
+*   **图标:**
+    *   `Icon set design for a social video platform UI, inspired by Douyin/TikTok. Flat, minimalist, line-art style icons for navigation (home, user, search) and interaction (heart, chat bubble, arrow). Consistent stroke weight.`
+    *   `Focus on the iconography: Simple, universally understandable flat icons, potentially using a subtle accent color (like red) for the 'like' icon when active.`
+
+**五、 组合与精调 (Combination & Fine-tuning)**
+
+*   **综合Prompt示例:**
+    *   `Generate a high-fidelity UI mockup screenshot of a desktop web browser displaying a social short-video feed website. The design should closely replicate the visual structure and style of the Douyin website. Key features: Dominant central vertical video player, fixed left sidebar navigation with flat icons/text, dark theme (near black background, white/light gray text), interaction icons (like, comment, share) vertically stacked on the right of the video. Use modern sans-serif fonts and minimalist flat icons. Ensure high contrast and a clean, uncluttered layout.`
+*   **加入情境/细节:**
+    *   `...showing a specific type of video content (e.g., cooking tutorial, dance clip) to make it more realistic.`
+    *   `...with the 'like' button highlighted in red.`
+    *   `...displaying example comments in the side panel.`
+*   **风格词汇:** `Minimalist`, `Flat Design`, `Dark Mode`, `High Contrast`, `Content-Focused`, `Immersive`, `Modern Sans-Serif`, `Clean Layout`, `Web UI Kit`, `Social Media Interface`, `Video Platform`, `Desktop View`, `UI Mockup`, `High Fidelity`.
+*   **可能需要的负向提示词 (Negative Prompts - if using AI like Stable Diffusion):** `Light mode`, `cluttered`, `messy`, `old style`, `skeuomorphic`, `3D icons`, `serif fonts`, `mobile view`, `low quality`, `blurry`, `cartoonish`.
+
+---
+
+
+```
+
+

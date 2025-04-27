@@ -8,7 +8,7 @@
 CHAT_DEMO_CFG = {
     **{
         "api_key": "AIzaSyAycf8ZNdXcMBRTGILPS64UCtoqNzTbeBc",  # 填写【Google Gemini】的 API Key。  （此处为我自用key，仅供测试，有效期较短，请自行申请）
-        "prompt_template_path": r"./prompt/微信聊天记录可视化prompt.txt",  # Prompt地址
+        "prompt_template_path": r"./prompt/卡子哥社区_Simonlin佬_微信聊天记录可视化prompt.txt",  # Prompt地址
     },
     **{
         **{  # 微信4.x配置
