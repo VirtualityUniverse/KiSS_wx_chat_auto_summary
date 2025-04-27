@@ -1,14 +1,27 @@
 """
 微信群聊天记录提取、分析和可视化工具
 
+功能描述:
+利用Gemini API自动获取、分析微信群聊记录并生成美观的HTML日报，帮助群成员快速了解群内重要信息与讨论内容。
+
 使用方法:
 python demo.py --talker "群名称" --days 0 --api-key "你的Gemini API密钥" --open-browser
+
+参数说明:  （不填则默认从cfg.py读取，更稳定更省事、但不如CLI传参灵活）
+--talker: 微信群名称
+--days: 获取最近几天的聊天记录 (0表示仅当天，1表示今天和昨天)
+--api-key: Gemini API密钥
+--open-browser: 生成HTML后自动在浏览器中打开
+--start-date: 自定义起始日期 (格式: YYYY-MM-DD)
+--end-date: 自定义结束日期 (格式: YYYY-MM-DD)
+--output-dir: 指定输出目录 (默认: ./output)
+--prompt-path: 自定义Prompt模板路径 (默认: ./prompt_template.txt)
 
 依赖安装:
 pip install google-generativeai tqdm requests
 
 作者: AI助手
-版本: 1.0
+版本: 1.2
 """
 
 import requests
