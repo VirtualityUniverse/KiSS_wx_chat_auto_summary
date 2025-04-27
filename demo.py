@@ -275,9 +275,11 @@ def run_chatlog_commands():
                 logger.error(f"用户取消了操作: {str(e)}")
                 raise Exception(f"用户取消了GUI操作，程序终止: {str(e)}")
 
+        test_api = "/api/v1/chatroom"
+
         # 检查服务器是否已经在运行
         try:
-            requests.get(base_server_url + "/api/v1/info", timeout=2)
+            requests.get(base_server_url + test_api, timeout=2)
             logger.info("Chatlog服务器已经在运行")
             return None
         except requests.exceptions.RequestException:
@@ -303,7 +305,7 @@ def run_chatlog_commands():
             for i in range(max_retries):
                 try:
                     response = requests.get(
-                        base_server_url + "/api/v1/chatroom", timeout=2)
+                        base_server_url + test_api, timeout=2)
                     if response.status_code == 200 and response.text:
                         logger.info("服务器启动成功，已确认可以访问聊天室数据")
                         return

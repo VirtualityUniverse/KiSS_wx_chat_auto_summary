@@ -259,7 +259,7 @@ yesyes  收到
 
 【特定 prompt】存储路径：
 ```
-.prompt/微信聊天记录可视化prompt.txt
+prompt/微信聊天记录可视化prompt.txt
 ```
 此处采用卡神/Simonlin 的 prompt。
 
