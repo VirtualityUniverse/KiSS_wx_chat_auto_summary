@@ -179,4 +179,9 @@ cython_debug/
 
 # Custom by User
 /.idea
-
+/chatlog/chatlog.exe
+/logs/
+/output/
+/temp/
+# Merged into readme.md
+/基本流程.md
