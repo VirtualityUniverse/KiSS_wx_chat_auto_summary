@@ -22,7 +22,7 @@ KiSS_wx_chat_auto_summary 是一个用于微信群聊天记录的自动提取、
 
 ## 最终效果示例
 
-![image-20250427085839410](markdown/README/image-20250427085839410.png)
+![image-20250427085839410_图片无法显示_多为DNS网络问题](markdown/README/image-20250427085839410.png)
 
 
 
@@ -73,13 +73,13 @@ graph TD
    - 确认微信识别状态为"online"
    - 记录"Data Dir"和"Work Dir"路径值
    - 配图示意：
-     - ![image-20250427085224822](markdown/README/image-20250427085224822.png)
+     - ![image-20250427085224822_图片无法显示_多为DNS网络问题](markdown/README/image-20250427085224822.png)
 
 4. **配置 cfg.py 文件**
    - 填入 Data Dir 和 Work Dir 路径
    - 设置其他必要配置项
    - 图片示意：
-     - ![image-20250427085659847](markdown/README/image-20250427085659847.png)
+     - ![image-20250427085659847_图片无法显示_多为DNS网络问题](markdown/README/image-20250427085659847.png)
 
 5. **运行程序**
    - 执行 `python demo.py`
