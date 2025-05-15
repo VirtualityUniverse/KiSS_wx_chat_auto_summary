@@ -4,6 +4,12 @@ import subprocess
 import tkinter as tk
 from tkinter import messagebox
 
+"""
+1、创建必要的资源目录
+2、对环境进行自检
+3、自检失败进行报错提示；自检成功后，启动原业务脚本
+"""
+
 def check_environment():
     """检查环境是否满足要求"""
     # 检查chatlog.exe是否存在
