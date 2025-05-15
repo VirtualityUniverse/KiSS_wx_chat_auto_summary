@@ -43,6 +43,13 @@ from tkinter import messagebox  # 弹窗，用于提示
 # 配置日志
 from cfg import CHAT_DEMO_CFG
 
+import os
+
+os.environ['http_proxy'] = 'http://127.0.0.1:7899'
+os.environ['https_proxy'] = 'http://127.0.0.1:7899'
+os.environ['all_proxy'] = 'socks5://127.0.0.1:7899'
+
+
 # 创建日志目录
 log_dir = CHAT_DEMO_CFG.get('log_dir', './logs')
 os.makedirs(log_dir, exist_ok=True)
@@ -545,6 +552,7 @@ def open_in_browser(html_filepath):
 
 
 def main():
+    get = requests.get("https://generativelanguage.googleapis.com/$discovery/rest")
     """主函数"""
     server_process = None
 
