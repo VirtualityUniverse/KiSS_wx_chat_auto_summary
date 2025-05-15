@@ -45,9 +45,12 @@ from cfg import CHAT_DEMO_CFG
 
 import os
 
-os.environ['http_proxy'] = 'http://127.0.0.1:7899'
-os.environ['https_proxy'] = 'http://127.0.0.1:7899'
-os.environ['all_proxy'] = 'socks5://127.0.0.1:7899'
+# 如果您需要指定本机Proxy代理（如Clash、V2ray等），可以开启此开关（并修改IP、端口）。
+use_env_proxy = False
+if use_env_proxy :
+    os.environ['http_proxy'] = 'http://127.0.0.1:7899'
+    os.environ['https_proxy'] = 'http://127.0.0.1:7899'
+    os.environ['all_proxy'] = 'socks5://127.0.0.1:7899'
 
 
 # 创建日志目录
