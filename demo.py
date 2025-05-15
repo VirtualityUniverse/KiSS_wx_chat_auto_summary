@@ -555,7 +555,8 @@ def open_in_browser(html_filepath):
 
 
 def main():
-    get = requests.get("https://generativelanguage.googleapis.com/$discovery/rest")
+    # 相关API文档测试
+    # get = requests.get("https://generativelanguage.googleapis.com/$discovery/rest")
     """主函数"""
     server_process = None
 
