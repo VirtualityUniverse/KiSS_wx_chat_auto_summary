@@ -3,6 +3,17 @@ import sys
 import shutil
 import PyInstaller.__main__
 
+
+print("""
+
+注意事项：
+1、可通过  【  python build2exe/build_exe_fixed.py  】  进行打包。
+
+目前存在的问题：
+1、似乎没有问题
+
+""")
+
 # 确保输出目录存在
 if not os.path.exists("dist"):
     os.makedirs("dist")
@@ -41,6 +52,10 @@ PyInstaller.__main__.run([
 # 复制必要的文件到dist目录
 print("复制额外文件到dist目录...")
 shutil.copy("cfg.py", os.path.join("dist", "cfg.py"))
+chatlog_dest_path = os.path.join("dist", "chatlog")
+if os.path.exists(chatlog_dest_path):
+    shutil.rmtree(chatlog_dest_path)
+shutil.copytree("chatlog", chatlog_dest_path) # 需要把相关chatlog程序，复制过去。
 
 # 创建启动批处理文件
 with open(os.path.join("dist", "启动.bat"), "w", encoding="utf-8") as f:

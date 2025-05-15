@@ -43,16 +43,6 @@ from tkinter import messagebox  # 弹窗，用于提示
 # 配置日志
 from cfg import CHAT_DEMO_CFG
 
-import os
-
-# 如果您需要指定本机Proxy代理（如Clash、V2ray等），可以开启此开关（并修改IP、端口）。
-use_env_proxy = False
-if use_env_proxy :
-    os.environ['http_proxy'] = 'http://127.0.0.1:7899'
-    os.environ['https_proxy'] = 'http://127.0.0.1:7899'
-    os.environ['all_proxy'] = 'socks5://127.0.0.1:7899'
-
-
 # 创建日志目录
 log_dir = CHAT_DEMO_CFG.get('log_dir', './logs')
 os.makedirs(log_dir, exist_ok=True)
@@ -554,9 +544,25 @@ def open_in_browser(html_filepath):
         logger.error(f"在浏览器中打开文件失败: {str(e)}")
 
 
-def main():
+# 测试海外Google联通性。
+def check_oversea_conn():
+    import os
+
+    # 如果您需要指定本机Proxy代理（如Clash、V2ray等），可以开启此开关（并修改IP、端口）。
+    use_env_proxy = False
+    if use_env_proxy:
+        os.environ['http_proxy'] = 'http://127.0.0.1:7899'
+        os.environ['https_proxy'] = 'http://127.0.0.1:7899'
+        os.environ['all_proxy'] = 'socks5://127.0.0.1:7899'
+
     # 相关API文档测试
-    # get = requests.get("https://generativelanguage.googleapis.com/$discovery/rest")
+    resp____oversea_conn_test = requests.get("https://generativelanguage.googleapis.com/$discovery/rest")
+    print("\n检查Google服务网络连接\n", resp____oversea_conn_test.text, '（此处【 "code": 403 、 200 】都属于正常）')
+
+
+def main():
+    check_oversea_conn()
+
     """主函数"""
     server_process = None
 
