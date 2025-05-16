@@ -18,27 +18,29 @@ python demo.py --talker "群名称" --days 0 --api-key "你的Gemini API密钥" 
 --prompt-path: 自定义Prompt模板路径 (默认: ./prompt_template.txt)
 
 依赖安装:
-pip install google-generativeai tqdm requests
+pip install google-generativeai tqdm requests selenium webdriver-manager
 
 作者: AI助手
 版本: 1.2
 """
 
 import requests
-import os
 import subprocess
 import time
 import argparse
 import logging
-import json
 import sys
 import webbrowser
 from datetime import datetime, timedelta
 import google.generativeai as genai
-from pathlib import Path
 import tqdm  # 添加tqdm库用于显示进度条
 import tkinter as tk
-from tkinter import messagebox  # 弹窗，用于提示
+
+# 添加HTML转PNG所需的依赖
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 # 配置日志
 from cfg import CHAT_DEMO_CFG
@@ -46,7 +48,7 @@ from cfg import CHAT_DEMO_CFG
 import os
 
 # 如果您需要指定本机Proxy代理（如Clash、V2ray等），可以开启此开关（并修改IP、端口）。
-use_env_proxy = False
+use_env_proxy = True
 if use_env_proxy :
     os.environ['http_proxy'] = 'http://127.0.0.1:7899'
     os.environ['https_proxy'] = 'http://127.0.0.1:7899'
@@ -119,7 +121,8 @@ def init_gemini_api(api_key):
         model = genai.GenerativeModel(
             # gemini-2.5-pro-preview-03-25 available for free (this an update of gemini-2.5-pro-exp-03-25) : r/LocalLLaMA    https://www.reddit.com/r/LocalLLaMA/comments/1jrwstn/gemini25propreview0325_available_for_free_this_an/
             # 'gemini-2.5-pro-preview-03-25'  # 是【gemini-2.5-pro-exp-03-25】的升级版。但是要收费。
-            'gemini-2.5-pro-exp-03-25'  # 这个是免费的。
+            'gemini-2.5-flash-preview-04-17'  # 这个是免费的。
+            # 'gemini-2.5-pro-exp-03-25'  # 这个是免费的。
         )
         logger.info("成功连接到Gemini API")
         return model
@@ -524,13 +527,17 @@ def generate_html_with_gemini(model, prompt):
 def save_html(html_content, output_dir, talker_name):
     """保存HTML文件"""
     try:
-        # 确保输出目录存在
-        os.makedirs(output_dir, exist_ok=True)
+        # 当前日期作为目录名
+        date_folder = datetime.now().strftime("%Y-%m-%d")
+        output_subdir = os.path.join(output_dir, date_folder)
 
-        # 创建文件名，包含日期和时间
-        current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"{talker_name}_群日报_{current_datetime}.html"
-        filepath = os.path.join(output_dir, filename)
+        # 确保输出目录存在
+        os.makedirs(output_subdir, exist_ok=True)
+
+        # 生成文件名
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        filename = f"{talker_name}_群日报_{timestamp}.html"
+        filepath = os.path.join(output_subdir, filename)
 
         logger.info(f"保存HTML至: {filepath}")
 
@@ -543,6 +550,62 @@ def save_html(html_content, output_dir, talker_name):
     except Exception as e:
         logger.error(f"保存HTML文件失败: {str(e)}")
         raise
+
+def html_to_png(html_filepath):
+    """将HTML文件转换为PNG图片 便于分享
+    toDo 后续可根据系统判断使用怎样方式进行截图
+    
+    Args:
+        html_filepath: HTML文件的完整路径
+        
+    Returns:
+        png_filepath: 生成的PNG图片的完整路径
+    """
+    try:
+        logger.info(f"开始将HTML转换为PNG: {html_filepath}")
+        
+        # 设置Chrome选项
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")  # 无头模式
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--window-size=1920,1080")  # 设置窗口大小
+        
+        # 初始化WebDriver
+        driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()),
+            options=chrome_options
+        )
+        
+        # 加载HTML文件
+        html_url = f"file:///{os.path.abspath(html_filepath)}"
+        driver.get(html_url)
+        
+        # 等待页面加载完成
+        time.sleep(2)
+        
+        # 获取页面实际高度
+        page_height = driver.execute_script("return document.body.scrollHeight")
+        driver.set_window_size(1920, page_height)
+        
+        # 再次等待以确保调整后的页面完全加载
+        time.sleep(1)
+        
+        # 生成PNG文件路径
+        png_filepath = os.path.splitext(html_filepath)[0] + ".png"
+        
+        # 截图并保存
+        driver.save_screenshot(png_filepath)
+        
+        # 关闭WebDriver
+        driver.quit()
+        
+        logger.info(f"HTML已成功转换为PNG: {png_filepath}")
+        return png_filepath
+    except Exception as e:
+        logger.error(f"HTML转PNG失败: {str(e)}")
+        print(f"HTML转PNG过程中出错: {str(e)}")
+        return None
 
 
 def open_in_browser(html_filepath):
@@ -614,6 +677,8 @@ def main():
 
         # 处理每个talker
         for talker in talkers:
+            # 暂停10 秒
+            time.sleep(60)
             try:
                 print(f"\n--- 开始处理 「{talker}」 ---")
 
@@ -651,28 +716,27 @@ def main():
                 print("⏳ 正在保存日报文件...")
                 html_filepath = save_html(
                     html_content, args.output_dir, talker)
-                print(f"✅ 日报已保存至: {html_filepath}")
+                
+                # 将HTML转换为PNG图片
+                png_filepath = html_to_png(html_filepath)
+                
+                # 如果成功生成了PNG，显示相关信息
+                if png_filepath:
+                    print(f"PNG图片已生成: {png_filepath}")
 
-                # 如果指定了，在浏览器中打开HTML文件
-                if CHAT_DEMO_CFG.get('auto_open_browser', False):
-                    print("⏳ 正在打开浏览器...")
-                    open_in_browser(html_filepath)
-                    print("✅ 已在浏览器中打开日报")
+                # 如果需要，在浏览器中打开HTML
+                open_browser =  CHAT_DEMO_CFG.get('auto_open_browser', False)
+                if open_browser and html_filepath:
+                    webbrowser.open(f"file://{os.path.abspath(html_filepath)}")
 
-                print(f"--- 「{talker}」处理完成 ---")
+                print(f"处理完成！HTML报告已保存到: {html_filepath}")
+                
+            finally:
+                # 如果服务器进程存在，终止它
+                if server_process:
+                    server_process.terminate()
+                    logger.info("已终止Chatlog服务器")
 
-            except Exception as e:
-                print(f"\n❌ 处理「{talker}」时出错: {str(e)}")
-                logger.error(f"处理「{talker}」时出错: {str(e)}")
-                continue
-
-        print("-" * 50)
-        print("🎉 所有任务处理完成！")
-        print("-" * 50)
-
-    except KeyboardInterrupt:
-        print("\n❌ 用户中断处理")
-        logger.info("用户中断处理")
     except Exception as e:
         print(f"\n❌ 处理出错: {str(e)}")
         logger.error(f"主程序处理过程中出错: {str(e)}")
