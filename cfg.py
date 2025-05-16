@@ -23,8 +23,16 @@ CHAT_DEMO_CFG = {
         },
     },
     "talkers": [  # 联系人、群聊  的【名称】、【wxid】，一般填【名称】即可。
-        "创新点子", "AIGC精英分队㉖🚎🚌", "AI开发者创造营⚽️🏀🏐", "Simonlin的兄弟姐妹",
+        # "创新点子", "AIGC精英分队㉖🚎🚌",
+        "AI开发者创造营⚽️🏀🏐",
+        # "Simonlin的兄弟姐妹",
     ],
+    'days': 1,  # 获取最近多少天的聊天记录。当填写为0时，代表就只是当天。填写为1时，代表今天和昨天。命令行未指定时使用此值。
+    # 数据打码脱敏规则
+    "data_masking_rules": {
+        "小严同学": "NPC1号",
+        "小严同学（goDog神走狗神）": "NPC2号"
+    },
     # ——————————————————————————————————————
     # ——————————————————————————————————————
     # ——————————————————————————————————————
@@ -43,5 +51,8 @@ CHAT_DEMO_CFG = {
         "logging_format": '%(asctime)s - %(levelname)s - %(message)s',
         "logging_date_format": '%Y-%m-%d %H:%M:%S'
     },
-
+    # Gemini API 调用相关配置
+    'safety_margin_tokens': 1000,  # token计算时的安全边际
+    'gemini_retry_attempts': 5,  # Gemini API调用失败时的最大重试次数
+    'gemini_retry_delay_sec': 20,  # Gemini API调用失败时重试的等待秒数
 }
