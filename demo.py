@@ -34,7 +34,7 @@ import webbrowser
 from datetime import datetime, timedelta
 import google.generativeai as genai
 import tqdm  # 添加tqdm库用于显示进度条
-import tkinter as tk
+from tkinter import messagebox  # 弹窗，用于提示
 
 # 添加HTML转PNG所需的依赖
 from selenium import webdriver
@@ -554,52 +554,52 @@ def save_html(html_content, output_dir, talker_name):
 def html_to_png(html_filepath):
     """将HTML文件转换为PNG图片 便于分享
     toDo 后续可根据系统判断使用怎样方式进行截图
-    
+
     Args:
         html_filepath: HTML文件的完整路径
-        
+
     Returns:
         png_filepath: 生成的PNG图片的完整路径
     """
     try:
         logger.info(f"开始将HTML转换为PNG: {html_filepath}")
-        
+
         # 设置Chrome选项
         chrome_options = Options()
         chrome_options.add_argument("--headless")  # 无头模式
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--window-size=1920,1080")  # 设置窗口大小
-        
+
         # 初始化WebDriver
         driver = webdriver.Chrome(
             service=Service(ChromeDriverManager().install()),
             options=chrome_options
         )
-        
+
         # 加载HTML文件
         html_url = f"file:///{os.path.abspath(html_filepath)}"
         driver.get(html_url)
-        
+
         # 等待页面加载完成
         time.sleep(2)
-        
+
         # 获取页面实际高度
         page_height = driver.execute_script("return document.body.scrollHeight")
         driver.set_window_size(1920, page_height)
-        
+
         # 再次等待以确保调整后的页面完全加载
         time.sleep(1)
-        
+
         # 生成PNG文件路径
         png_filepath = os.path.splitext(html_filepath)[0] + ".png"
-        
+
         # 截图并保存
         driver.save_screenshot(png_filepath)
-        
+
         # 关闭WebDriver
         driver.quit()
-        
+
         logger.info(f"HTML已成功转换为PNG: {png_filepath}")
         return png_filepath
     except Exception as e:
@@ -617,9 +617,25 @@ def open_in_browser(html_filepath):
         logger.error(f"在浏览器中打开文件失败: {str(e)}")
 
 
-def main():
+# 测试海外Google联通性。
+def check_oversea_conn():
+    import os
+
+    # 如果您需要指定本机Proxy代理（如Clash、V2ray等），可以开启此开关（并修改IP、端口）。
+    use_env_proxy = False
+    if use_env_proxy:
+        os.environ['http_proxy'] = 'http://127.0.0.1:7899'
+        os.environ['https_proxy'] = 'http://127.0.0.1:7899'
+        os.environ['all_proxy'] = 'socks5://127.0.0.1:7899'
+
     # 相关API文档测试
-    # get = requests.get("https://generativelanguage.googleapis.com/$discovery/rest")
+    resp____oversea_conn_test = requests.get("https://generativelanguage.googleapis.com/$discovery/rest")
+    print("\n检查Google服务网络连接\n", resp____oversea_conn_test.text, '（此处【 "code": 403 、 200 】都属于正常）')
+
+
+def main():
+    check_oversea_conn()
+
     """主函数"""
     server_process = None
 
@@ -716,10 +732,11 @@ def main():
                 print("⏳ 正在保存日报文件...")
                 html_filepath = save_html(
                     html_content, args.output_dir, talker)
-                
+                print(f"✅ 日报已保存至: {html_filepath}")
+
                 # 将HTML转换为PNG图片
                 png_filepath = html_to_png(html_filepath)
-                
+
                 # 如果成功生成了PNG，显示相关信息
                 if png_filepath:
                     print(f"PNG图片已生成: {png_filepath}")
@@ -730,7 +747,10 @@ def main():
                     webbrowser.open(f"file://{os.path.abspath(html_filepath)}")
 
                 print(f"处理完成！HTML报告已保存到: {html_filepath}")
-                
+                print("-" * 50)
+                print("🎉 所有任务处理完成！")
+                print("-" * 50)
+
             finally:
                 # 如果服务器进程存在，终止它
                 if server_process:
