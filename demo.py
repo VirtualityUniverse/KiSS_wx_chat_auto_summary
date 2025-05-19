@@ -1137,21 +1137,18 @@ def main():
                         # 如果发布成功且配置了 URL，则打开 URL
                         if html_url:
                             print(
-                                f"  ⏳ 正在为「{segment_display_name}」打开浏览器...")
+                                f"  ⏳ 正在为「{segment_display_name}」打开URL...")
                             webbrowser.open(html_url)
                             print(
                                 f"  ✅ 已在浏览器中打开「{segment_display_name}」的日报")
                         else:
+                          # 如果指定了，在浏览器中打开HTML文件
                             print(
                                 f"  ⏳ 正在为「{segment_display_name}」打开浏览器...")
                             webbrowser.open(
                                 f"file://{os.path.abspath(html_filepath)}")
                             print(
                                 f"  ✅ 已在浏览器中打开「{segment_display_name}」的日报")
-
-                    # 如果指定了，在浏览器中打开HTML文件
-                    if CHAT_DEMO_CFG.get('auto_open_browser', False):
-                        open_in_browser(html_filepath)
 
                     print(f"  --- 「{segment_display_name}」处理完成 ---")
 
