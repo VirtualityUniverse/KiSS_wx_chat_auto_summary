@@ -775,7 +775,55 @@ def generate_html_with_gemini(model, prompt, tpm_limit, last_request_state):
     logger.error("Gemini API调用在所有重试后均失败，且未正确抛出异常。")
     raise Exception("Gemini API调用在所有重试后均失败。")
 
-
+def save_report_urls_to_unified_file(reports_info):
+    """
+    将所有群日报的URL和PNG地址保存到统一的txt文件中
+    
+    Args:
+        reports_info: 包含所有群日报信息的列表，每个元素是一个字典，包含群名称、HTML文件路径、URL和PNG路径
+    """
+    try:
+        # 获取当前日期作为文件名的一部分
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        
+        # 创建输出目录（如果不存在）
+        output_dir = os.path.join(CHAT_DEMO_CFG.get('output_dir', './output'), current_date)
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # 创建统一的URL记录文件
+        urls_file = os.path.join(output_dir, f"all_reports_urls_{current_date}.txt")
+        
+        # 准备写入的内容
+        content = f"===== 群日报发布信息汇总 ({current_date}) =====\n\n"
+        content += f"生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+        
+        # 添加每个群日报的信息
+        for i, report in enumerate(reports_info, 1):
+            content += f"--- 群日报 #{i} ---\n"
+            content += f"群聊名称: {report['talker']}\n"
+            content += f"HTML文件: {os.path.abspath(report['html_filepath'])}\n"
+            
+            if report.get('html_url'):
+                content += f"发布地址(URL): {report['html_url']}\n"
+            
+            if report.get('png_filepath'):
+                content += f"PNG图片地址: {os.path.abspath(report['png_filepath'])}\n"
+            
+            content += "\n"
+            
+        # 写入文件
+        with open(urls_file, "w", encoding="utf-8") as f:
+            f.write(content)
+            
+        logger.info(f"已保存所有群日报URL信息到: {urls_file}")
+        print(f"✅ 所有群日报URL信息已保存至: {urls_file}")
+        
+        return urls_file
+        
+    except Exception as e:
+        logger.error(f"保存群日报URL信息失败: {str(e)}")
+        print(f"❌ 保存群日报URL信息失败: {str(e)}")
+        return None
 
 def save_html(html_content, output_dir, talker_name):
     """保存HTML文件"""
@@ -1014,6 +1062,9 @@ def main():
             'tokens': 0  # 上一次请求的token数
         }
 
+        # 创建一个列表来存储所有群日报的信息
+        all_reports_info = []
+
         # 处理每个talker
         for talker_index, talker in enumerate(talkers):
             try:
@@ -1106,6 +1157,10 @@ def main():
                         html_content, args.output_dir, output_filename_base)
                     print(f"  ✅ 「{segment_display_name}」日报已保存至: {html_filepath}")
 
+                     # 初始化变量
+                    png_filepath = None
+                    html_url = None
+                    
                     # 将HTML转换为PNG图片
                     if CHAT_DEMO_CFG.get('auto_generate_png', False):
                         png_filepath = html_to_png(html_filepath)
@@ -1130,6 +1185,15 @@ def main():
                             print(f"✅ URL已生成: {html_url}")
                         else:
                             print("❌ URL生成失败，请检查日志")
+                        
+                                # 收集当前群日报的信息
+                    report_info = {
+                        'talker': talker,
+                        'html_filepath': html_filepath,
+                        'html_url': html_url,
+                        'png_filepath': png_filepath
+                    }
+                    all_reports_info.append(report_info)
 
                     # 如果需要，在浏览器中打开HTML
                     open_browser = CHAT_DEMO_CFG.get('auto_open_browser', False)
@@ -1151,7 +1215,12 @@ def main():
                                 f"  ✅ 已在浏览器中打开「{segment_display_name}」的日报")
 
                     print(f"  --- 「{segment_display_name}」处理完成 ---")
-
+                    
+                # 所有群日报处理完成后，保存统一的URL记录文件
+                if all_reports_info:
+                    urls_file = save_report_urls_to_unified_file(all_reports_info)
+                    if urls_file:
+                        print(f"✅ 所有群日报的URL信息已统一保存到: {urls_file}")
             except Exception as e:
                 print(f"\n❌ 处理「{talker}」时出错 (在片段处理中或之前): {str(e)}")
                 logger.error(f"处理「{talker}」时出错: {str(e)}")
