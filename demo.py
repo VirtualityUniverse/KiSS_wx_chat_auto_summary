@@ -109,6 +109,8 @@ def parse_arguments():
                         help='托管网站地址')
     parser.add_argument('--requires-password', action='store_true',
                         help='发布URL是否需要密码')
+    parser.add_argument('--auto-mode', action='store_true',
+                        help='自动模式，不需要用户交互')
 
     return parser.parse_args()
 
@@ -181,6 +183,14 @@ wait_sec = CHAT_DEMO_CFG.get('manual_gui_auto_decryption_wait_sec', 30)
 
 def alert_msg():
     """显示阻塞型对话框，并等待用户确认"""
+    # 检查是否为自动模式
+    args = parse_arguments()
+    if args.auto_mode:
+        logger.info("自动模式：跳过用户交互，继续执行...")
+        print("自动模式：跳过用户交互，继续执行...")
+        time.sleep(wait_sec)  # 仍然等待指定的时间
+        return
+        
     try:
         print("正在创建提示对话框...")
 
@@ -314,7 +324,7 @@ def run_chatlog_commands():
             logger.info("产生一个提示，并阻塞等待交互...")
 
             # 等待一会儿让GUI程序启动
-            time.sleep(0)
+            time.sleep(1)
 
             # 显示提示对话框并处理可能的异常
             try:
