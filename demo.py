@@ -822,7 +822,8 @@ def save_report_urls_to_unified_file(reports_info):
             content += "\n"
             
         # 写入文件
-        with open(urls_file, "w", encoding="utf-8") as f:
+        with open(urls_file, "a", encoding="utf-8") as f:
+            f.write("\n==================== 新增群日报发布信息 =========================\n\n")  # 添加分隔线标识新内容
             f.write(content)
             
         logger.info(f"已保存所有群日报URL信息到: {urls_file}")
@@ -1196,7 +1197,7 @@ def main():
                         else:
                             print("❌ URL生成失败，请检查日志")
                         
-                                # 收集当前群日报的信息
+                    # 收集当前群日报的信息
                     report_info = {
                         'talker': talker,
                         'html_filepath': html_filepath,

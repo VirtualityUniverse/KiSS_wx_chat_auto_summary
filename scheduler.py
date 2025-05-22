@@ -54,7 +54,8 @@ def run_daily_report():
             cmd, 
             stdout=subprocess.PIPE, 
             stderr=subprocess.PIPE,
-            text=True
+            text=True,
+            encoding='utf-8'  # 明确指定使用UTF-8编码
         )
         
         # 获取输出
