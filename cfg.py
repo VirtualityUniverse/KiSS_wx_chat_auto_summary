@@ -60,11 +60,4 @@ CHAT_DEMO_CFG = {
     'safety_margin_tokens': 1000,  # token计算时的安全边际
     'gemini_retry_attempts': 5,  # Gemini API调用失败时的最大重试次数
     'gemini_retry_delay_sec': 60,  # Gemini API调用失败时重试的等待秒数
-    'related_link': {
-        'text': '查看更多群日报',  # 链接显示的文本
-        'url': 'https://www.baidu.com/'  # 链接的目标URL
-    },
-    'auto_send_to_wechat':True,
-    'wechat_send_delay_seconds':5,
-    'wechat_message_prefix':"测试消息"
 }
