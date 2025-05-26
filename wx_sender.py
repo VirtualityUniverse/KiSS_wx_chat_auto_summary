@@ -21,6 +21,7 @@ import pyperclip
 # 配置日志
 logger = logging.getLogger(__name__)
 
+
 def send_url_to_wechat_group(group_name, url, message_prefix="今日群日报已生成："):
     """
     将URL发送到指定的微信群聊
