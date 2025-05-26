@@ -775,15 +775,45 @@ def generate_html_with_gemini(model, prompt, tpm_limit, last_request_state):
     raise Exception("Gemini API调用在所有重试后均失败。")
 
 
+# Helper function to sanitize filenames
+def sanitize_filename(name: str) -> str:
+    """Sanitizes a string to be a valid filename by replacing invalid characters."""
+    # Ensure NUL characters are removed first, as they can terminate strings or cause other issues.
+    sanitized = name.replace('\\0', '')
+
+    # Define characters that are generally invalid or problematic in filenames across common OSes.
+    # Includes characters from the user's specific error (#, |) and other common ones.
+    invalid_chars = r'<>:"/\\|?*#' # Added # based on user issue, double escaped backslash for literal
+    for char_to_replace in invalid_chars:
+        sanitized = sanitized.replace(char_to_replace, '_')
+
+    # Consolidate multiple consecutive underscores (resulting from replacements) into a single underscore.
+    while "__" in sanitized:
+        sanitized = sanitized.replace("__", "_")
+
+    # Remove leading/trailing spaces and periods, which can be problematic on Windows.
+    sanitized = sanitized.strip(' .')
+
+    # If the name becomes empty after sanitization (e.g., was "###" or " . "), provide a fallback.
+    if not sanitized:
+        sanitized = "default_filename_part"
+
+    return sanitized
+
+
 def save_html(html_content, output_dir, talker_name):
     """保存HTML文件"""
     try:
         # 确保输出目录存在
         os.makedirs(output_dir, exist_ok=True)
 
+        # Sanitize the talker_name part of the filename
+        # talker_name here is effectively output_filename_base from the main loop
+        sanitized_talker_part = sanitize_filename(talker_name)
+
         # 创建文件名，包含日期和时间
         current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"{talker_name}_群日报_{current_datetime}.html"
+        filename = f"{sanitized_talker_part}_群日报_{current_datetime}.html"
         filepath = os.path.join(output_dir, filename)
 
         logger.info(f"保存HTML至: {filepath}")
