@@ -181,18 +181,15 @@ def main():
     if current_hour >= scheduled_hour:
         logger.info(f"当前时间已过{SCHEDULED_TIME}，是否要立即执行一次任务？(y/n)，{INPUT_TIMEOUT}秒内未输入则默认取消")
         choice = get_input_with_timeout(f"当前时间已过{SCHEDULED_TIME}，是否要立即执行一次任务？(y/n)，{INPUT_TIMEOUT}秒内未输入则默认取消: ", INPUT_TIMEOUT)
-
-        # 如果用户未输入，视为 'y'
-        if not choice:
-            logger.info("用户未在规定时间内输入，系统默认立即执行任务")
-            run_daily_report()
-        elif choice.lower() == 'y':
+        
+        if choice and choice.lower() == 'y':
             logger.info("用户选择立即执行任务")
             run_daily_report()
-        elif choice.lower() == 'n':
-            logger.info("用户选择不执行任务")
         else:
-            logger.info("用户输入无效，系统默认取消任务")
+            if choice and choice.lower() == 'n':
+                logger.info("用户选择不执行任务")
+            else:
+                logger.info("用户未做选择或选择取消，不执行任务")
     
     # 无限循环，持续检查是否有定时任务需要执行
     while True:

@@ -90,7 +90,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='微信群聊天记录提取、分析和可视化工具')
 
     parser.add_argument('--talker', type=str, help='微信群名称')
-    parser.add_argument('--days', type=int,
+    parser.add_argument('--days', type=int, default=1,
                         help='获取最近多少天的聊天记录。当填写为0时，代表就只是当天。填写为1时，代表今天和昨天。')
     parser.add_argument('--api-key', type=str, help='Google Gemini API密钥')
     parser.add_argument('--output-dir', type=str,
@@ -852,24 +852,7 @@ def save_html(html_content, output_dir, talker_name):
         filepath = os.path.join(output_subdir, filename)
 
         logger.info(f"保存HTML至: {filepath}")
-        
-        # 添加footer关联链接
-        related_link = CHAT_DEMO_CFG.get('related_link', {})
-        if related_link:
-            link_text = related_link.get('text', '查看更多群日报')
-            link_url = related_link.get('url', '#')
-            footer_html = f'<footer style="text-align: center; margin-top: 30px; padding: 10px; border-top: 1px solid #eee;">'
-            footer_html += f'<a href="{link_url}" target="_blank">{link_text}</a>'
-            footer_html += f'</footer></body></html>'
-            
-            # 替换HTML结尾标签
-            if '</body>' in html_content:
-                html_content = html_content.replace('</body>', footer_html)
-            elif '</html>' in html_content:
-                html_content = html_content.replace('</html>', footer_html)
-            else:
-                html_content += footer_html
-        
+
         # 写入HTML文件
         with open(filepath, 'w', encoding='utf-8') as file:
             file.write(html_content)
@@ -1058,10 +1041,7 @@ def main():
         else:
             print(f"📅 时间范围: 近 {args.days} 天")
             if args.days > 1:
-                if not args.auto_mode:
-                    messagebox.showinfo("友情提示", f"您的请求天数大于1（为{args.days}天），数据量较多的情况下，有可能日报会分为多个part输出")
-                else:
-                    logger.info("自动模式：跳过用户交互:友情提示...，继续执行...")
+                messagebox.showinfo("友情提示", f"您的请求天数大于1（为{args.days}天），数据量较多的情况下，有可能日报会分为多个part输出")
         print("-" * 50)
 
         # 检查API密钥
@@ -1252,43 +1232,6 @@ def main():
                     urls_file = save_report_urls_to_unified_file(all_reports_info)
                     if urls_file:
                         print(f"✅ 所有群日报的URL信息已统一保存到: {urls_file}")
-                        
-                    # 自动发送URL到微信群
-                    if CHAT_DEMO_CFG.get('auto_send_to_wechat', False):
-                        try:
-                            from wx_sender import send_url_to_wechat_group
-                            
-                            print("\n--- 开始向微信群发送群日报URL ---")
-                            # 获取自定义消息前缀
-                            message_prefix = CHAT_DEMO_CFG.get('wechat_message_prefix', "今日群日报已生成：")
-                            # 获取发送延迟时间
-                            delay = CHAT_DEMO_CFG.get('wechat_send_delay_seconds', 5)
-                            
-                            # 发送URL到对应群聊
-                            success_count = 0
-                            valid_reports = [r for r in all_reports_info if r.get('html_url') and r.get('talker')]
-                            
-                            for report in valid_reports:
-                                talker = report['talker']
-                                url = report['html_url']
-                                
-                                print(f"⏳ 正在向群聊 '{talker}' 发送URL...")
-                                if send_url_to_wechat_group(talker, url, message_prefix):
-                                    success_count += 1
-                                    print(f"✅ 成功向群聊 '{talker}' 发送URL")
-                                else:
-                                    print(f"❌ 向群聊 '{talker}' 发送URL失败")
-                                    
-                                # 每个群发送后等待一段时间
-                                time.sleep(delay)
-                                
-                            print(f"--- 群日报URL发送完成: 成功 {success_count}/{len(valid_reports)} ---")
-                        except ImportError as e:
-                            print(f"❌ 导入wx_sender模块失败，请确保已安装pyautogui和pyperclip库: {str(e)}")
-                            logger.error(f"导入wx_sender模块失败: {str(e)}")
-                        except Exception as e:
-                            print(f"❌ 发送群日报URL到微信群失败: {str(e)}")
-                            logger.error(f"发送群日报URL到微信群失败: {str(e)}")
             except Exception as e:
                 print(f"\n❌ 处理「{talker}」时出错 (在片段处理中或之前): {str(e)}")
                 logger.error(f"处理「{talker}」时出错: {str(e)}")
