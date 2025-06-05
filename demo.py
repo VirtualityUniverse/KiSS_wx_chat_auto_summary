@@ -143,7 +143,7 @@ def init_gemini_api(api_key):
         }
         tpm_limit = MODEL_CONFIG.get(model_name).get("tpm") * (TPM_errorFix["token_ratio"])  # 默认 TPM 或从配置读取
 
-        print("可用模型列表:")
+        # print("可用模型列表:")
         for m in genai.list_models():
             if 'generateContent' in m.supported_generation_methods:
                 print(f"  - {m.name}")
@@ -281,7 +281,7 @@ def run_chatlog_commands():
         key_process = subprocess.run(
             [chatlog_exe, "key"], capture_output=True, text=True, check=True)
         key = key_process.stdout.strip()
-        print(key)
+        # print(key)
 
         # 解密数据库文件
         logger.info("解密数据库文件...")
@@ -822,8 +822,12 @@ def save_report_urls_to_unified_file(reports_info):
             content += "\n"
             
         # 写入文件
+        # 检查文件是否存在，如果存在则添加分隔线
+        file_exists = os.path.exists(urls_file) and os.path.getsize(urls_file) > 0
         with open(urls_file, "a", encoding="utf-8") as f:
-            f.write("\n==================== 新增群日报发布信息 =========================\n\n")  # 添加分隔线标识新内容
+            # 如果文件已存在且非空，添加分隔线
+            if file_exists:
+                f.write("\n\n==================== 新增群日报发布信息 =========================\n\n")
             f.write(content)
             
         logger.info(f"已保存所有群日报URL信息到: {urls_file}")
@@ -836,7 +840,7 @@ def save_report_urls_to_unified_file(reports_info):
         print(f"❌ 保存群日报URL信息失败: {str(e)}")
         return None
 
-def save_html(html_content, output_dir, talker_name):
+def save_html(html_content, output_dir, talker_name, related_link=None):
     """保存HTML文件"""
     try:
         # 当前日期作为目录名
@@ -853,20 +857,25 @@ def save_html(html_content, output_dir, talker_name):
 
         logger.info(f"保存HTML至: {filepath}")
         
+        # 优先使用传入的related_link，如果没有则使用全局配置
+        if related_link is None:
+            related_link = CHAT_DEMO_CFG.get('related_link', {})
+        
+        logger.info(f"使用的related_link配置: {related_link}")
+            
         # 添加footer关联链接
-        related_link = CHAT_DEMO_CFG.get('related_link', {})
         if related_link:
             link_text = related_link.get('text', '查看更多群日报')
             link_url = related_link.get('url', '#')
-            footer_html = f'<footer style="text-align: center; margin-top: 30px; padding: 10px; border-top: 1px solid #eee;">'
+            footer_html = f'<footer style="text-align: center; margin-top: 30px; padding: 10px; border-top: 1px solid #eee;">' 
             footer_html += f'<a href="{link_url}" target="_blank">{link_text}</a>'
-            footer_html += f'</footer></body></html>'
+            footer_html += f'</footer>'
             
             # 替换HTML结尾标签
             if '</body>' in html_content:
-                html_content = html_content.replace('</body>', footer_html)
+                html_content = html_content.replace('</body>', footer_html + '</body>')
             elif '</html>' in html_content:
-                html_content = html_content.replace('</html>', footer_html)
+                html_content = html_content.replace('</html>', footer_html + '</html>')
             else:
                 html_content += footer_html
         
@@ -1038,9 +1047,16 @@ def main():
         # 获取talkers列表
         talkers = []
         if args.talker:
-            talkers = [args.talker]
+            # 命令行参数提供的talker名称，创建一个简单的字典结构
+            talkers = [{'name': args.talker}]
         elif 'talkers' in config and isinstance(config['talkers'], list):
+            # 从配置文件加载talkers
             talkers = config['talkers']
+            # 检查talkers列表中的元素是否为字典格式，如果不是，转换为字典格式
+            for i, talker in enumerate(talkers):
+                if isinstance(talker, str):
+                    # 兼容旧格式：如果是字符串，转换为字典格式
+                    talkers[i] = {'name': talker}
             logger.info(f"从配置文件加载talkers: {talkers}")
 
         if not talkers:
@@ -1052,7 +1068,9 @@ def main():
             args.days = config.get('days', 0) # 默认为0，如果cfg中也没有
             logger.info(f"从配置文件加载days: {args.days}")
 
-        print(f"📊 目标群聊: {', '.join(talkers)}")
+        # 显示目标群聊名称列表
+        talker_names = [t['name'] for t in talkers]
+        print(f"📊 目标群聊: {', '.join(talker_names)}")
         if args.start_date and args.end_date:
             print(f"📅 时间范围: {args.start_date} 至 {args.end_date}")
         else:
@@ -1097,24 +1115,34 @@ def main():
         all_reports_info = []
 
         # 处理每个talker
-        for talker_index, talker in enumerate(talkers):
+        for talker_index, talker_config in enumerate(talkers):
             try:
-                print(f"\n--- 开始处理 「{talker}」 ({talker_index + 1}/{len(talkers)}) ---")
+                # 获取talker名称
+                talker_name = talker_config['name']
+                print(f"\n--- 开始处理 「{talker_name}」 ({talker_index + 1}/{len(talkers)}) ---")
 
                 # 获取聊天记录
-                print(f"⏳ 正在获取「{talker}」的聊天记录...")
+                print(f"⏳ 正在获取「{talker_name}」的聊天记录...")
                 full_chat_logs = get_chat_logs(
-                    talker,
+                    talker_name,
                     args.days,
                     args.start_date,
                     args.end_date,
                 )
 
                 if not full_chat_logs:
-                    print(f"❌ 未获取到「{talker}」的聊天记录，请检查群名称是否正确或时间范围内是否有消息")
-                    logger.warning(f"未获取到「{talker}」的聊天记录，跳过。")
+                    print(f"❌ 未获取到「{talker_name}」的聊天记录，请检查群名称是否正确或时间范围内是否有消息")
+                    logger.warning(f"未获取到「{talker_name}」的聊天记录，跳过。")
                     continue
-                print(f"✅ 成功获取「{talker}」的完整聊天记录: {len(full_chat_logs)}字符")
+                print(f"✅ 成功获取「{talker_name}」的完整聊天记录: {len(full_chat_logs)}字符")
+
+                # 获取talker个性化的prompt模板路径
+                talker_prompt_path = talker_config.get('prompt_template_path', args.prompt_path)
+                # 如果talker配置了自己的prompt模板，则使用它
+                if talker_prompt_path != args.prompt_path:
+                    print(f"⏳ 正在加载「{talker_name}」的个性化日报模板...")
+                    prompt_template = read_prompt_template(talker_prompt_path)
+                    print(f"✅ 「{talker_name}」的个性化模板加载完成")
 
                 # 确定基础Prompt的固定部分内容，用于计算token
                 # 注意：这里的 chat_logs 参数用一个简短的占位符，或者为空字符串，
@@ -1125,7 +1153,7 @@ def main():
                     请你根据最新的群聊记录，按照prompt要求，生成一份群日报。要求仅返回html，不要返回其他内容。
                     
                     【群聊名称】：
-                    {talker}
+                    {talker_name}
                     
                     【群日报生成要求prompt】：
                     {prompt_template}
@@ -1137,7 +1165,7 @@ def main():
                     """
 
                 # 切分聊天记录
-                print(f"⏳ 正在为「{talker}」的聊天记录按Token数切片...")
+                print(f"⏳ 正在为「{talker_name}」的聊天记录按Token数切片...")
                 chat_log_segments = split_chat_logs_into_segments(
                     model,
                     base_prompt_fixed_parts_text,
@@ -1147,14 +1175,14 @@ def main():
                 )
 
                 if not chat_log_segments:
-                    print(f"❌ 「{talker}」的聊天记录切片失败或为空，跳过此群聊。")
-                    logger.warning(f"「{talker}」的聊天记录未能切分出任何片段，跳过。")
+                    print(f"❌ 「{talker_name}」的聊天记录切片失败或为空，跳过此群聊。")
+                    logger.warning(f"「{talker_name}」的聊天记录未能切分出任何片段，跳过。")
                     continue
 
-                print(f"✅ 「{talker}」的聊天记录被切分为 {len(chat_log_segments)} 个片段进行处理。")
+                print(f"✅ 「{talker_name}」的聊天记录被切分为 {len(chat_log_segments)} 个片段进行处理。")
 
                 for segment_index, chat_segment in enumerate(chat_log_segments):
-                    segment_display_name = f"{talker} (片段 {segment_index + 1}/{len(chat_log_segments)})"
+                    segment_display_name = f"{talker_name} (片段 {segment_index + 1}/{len(chat_log_segments)})"
                     print(f"\n  --- 开始处理 「{segment_display_name}」 ---")
 
                     if not chat_segment.strip():
@@ -1166,7 +1194,7 @@ def main():
                     print(f"  ⏳ 正在为「{segment_display_name}」准备AI分析数据...")
                     complete_prompt = build_complete_prompt(
                         prompt_template, chat_segment,  # 使用切分后的片段
-                        talker=talker,
+                        talker=talker_name,
                     )
                     print(f"  ✅ 「{segment_display_name}」分析数据准备完成 (Prompt长度: {len(complete_prompt)}字符)")
 
@@ -1179,21 +1207,28 @@ def main():
                         last_request_state  # 新增请求状态参数 (会被修改)
                     )
 
+                    # 获取talker个性化配置，如果没有则使用全局配置
+                    auto_generate_png = talker_config.get('auto_generate_png', CHAT_DEMO_CFG.get('auto_generate_png', False))
+                    auto_generate_url = talker_config.get('auto_generate_url', CHAT_DEMO_CFG.get('auto_generate_url', False))
+                    url_requires_password = talker_config.get('url_requires_password', CHAT_DEMO_CFG.get('url_requires_password', False))
+                    # 获取相关链接配置
+                    related_link = talker_config.get('related_link', None)
+                    
                     # 保存HTML文件，如果多片段，文件名包含片段号
                     print(f"  ⏳ 正在为「{segment_display_name}」保存日报文件...")
                     file_suffix = f"_part_{segment_index + 1}" if len(chat_log_segments) > 1 else ""
-                    output_filename_base = f"{talker}{file_suffix}"
+                    output_filename_base = f"{talker_name}{file_suffix}"
 
                     html_filepath = save_html(
-                        html_content, args.output_dir, output_filename_base)
+                        html_content, args.output_dir, output_filename_base, related_link)
                     print(f"  ✅ 「{segment_display_name}」日报已保存至: {html_filepath}")
 
-                     # 初始化变量
+                    # 初始化变量
                     png_filepath = None
                     html_url = None
                     
                     # 将HTML转换为PNG图片
-                    if CHAT_DEMO_CFG.get('auto_generate_png', False):
+                    if auto_generate_png:
                         png_filepath = html_to_png(html_filepath)
                         if png_filepath:
                             print(f"✅ PNG图片已保存至: {png_filepath}")
@@ -1201,28 +1236,34 @@ def main():
                             print("❌ PNG图片生成失败，请检查日志")
 
                     # 将HTML发布到托管服务器（前提部署了html托管服务）
-                    if CHAT_DEMO_CFG.get('auto_generate_url', False):
+                    if auto_generate_url:
                         # 获取边缘托管地址
                         hosting_address = CHAT_DEMO_CFG.get(
                             'website_hosting_address', "http://localhost:8888")
-                        # 设置是否托管后URL需要密码访问
-                        requires_password = CHAT_DEMO_CFG.get(
-                            'url_requires_password', False)
-
-                        html_url = upload_html_to_server(html_content,
-                                                         requires_password,
+                        
+                        # 读取已保存的HTML文件内容（包含footer）
+                        with open(html_filepath, 'r', encoding='utf-8') as file:
+                            html_content_with_footer = file.read()
+                        
+                        # 使用包含footer的HTML内容上传
+                        html_url = upload_html_to_server(html_content_with_footer,
+                                                         url_requires_password,
                                                          hosting_address)
                         if html_url:
                             print(f"✅ URL已生成: {html_url}")
                         else:
                             print("❌ URL生成失败，请检查日志")
-                        
+                    
                     # 收集当前群日报的信息
                     report_info = {
-                        'talker': talker,
+                        'talker': talker_name,
                         'html_filepath': html_filepath,
                         'html_url': html_url,
-                        'png_filepath': png_filepath
+                        'png_filepath': png_filepath,
+                        'auto_send_to_wechat': talker_config.get('auto_send_to_wechat', CHAT_DEMO_CFG.get('auto_send_to_wechat', False)),
+                        'wechat_message_prefix': talker_config.get('wechat_message_prefix', CHAT_DEMO_CFG.get('wechat_message_prefix', "今日群日报已生成：")),
+                        'auto_sync_to_feishu': talker_config.get('auto_sync_to_feishu', CHAT_DEMO_CFG.get('auto_sync_to_feishu', False)),
+                        'related_link': related_link
                     }
                     all_reports_info.append(report_info)
 
@@ -1246,53 +1287,85 @@ def main():
                                 f"  ✅ 已在浏览器中打开「{segment_display_name}」的日报")
 
                     print(f"  --- 「{segment_display_name}」处理完成 ---")
-                    
-                # 所有群日报处理完成后，保存统一的URL记录文件
-                if all_reports_info:
-                    urls_file = save_report_urls_to_unified_file(all_reports_info)
-                    if urls_file:
-                        print(f"✅ 所有群日报的URL信息已统一保存到: {urls_file}")
-                        
-                    # 自动发送URL到微信群
-                    if CHAT_DEMO_CFG.get('auto_send_to_wechat', False):
-                        try:
-                            from wx_sender import send_url_to_wechat_group
-                            
-                            print("\n--- 开始向微信群发送群日报URL ---")
-                            # 获取自定义消息前缀
-                            message_prefix = CHAT_DEMO_CFG.get('wechat_message_prefix', "今日群日报已生成：")
-                            # 获取发送延迟时间
-                            delay = CHAT_DEMO_CFG.get('wechat_send_delay_seconds', 5)
-                            
-                            # 发送URL到对应群聊
-                            success_count = 0
-                            valid_reports = [r for r in all_reports_info if r.get('html_url') and r.get('talker')]
-                            
-                            for report in valid_reports:
-                                talker = report['talker']
-                                url = report['html_url']
-                                
-                                print(f"⏳ 正在向群聊 '{talker}' 发送URL...")
-                                if send_url_to_wechat_group(talker, url, message_prefix):
-                                    success_count += 1
-                                    print(f"✅ 成功向群聊 '{talker}' 发送URL")
-                                else:
-                                    print(f"❌ 向群聊 '{talker}' 发送URL失败")
-                                    
-                                # 每个群发送后等待一段时间
-                                time.sleep(delay)
-                                
-                            print(f"--- 群日报URL发送完成: 成功 {success_count}/{len(valid_reports)} ---")
-                        except ImportError as e:
-                            print(f"❌ 导入wx_sender模块失败，请确保已安装pyautogui和pyperclip库: {str(e)}")
-                            logger.error(f"导入wx_sender模块失败: {str(e)}")
-                        except Exception as e:
-                            print(f"❌ 发送群日报URL到微信群失败: {str(e)}")
-                            logger.error(f"发送群日报URL到微信群失败: {str(e)}")
             except Exception as e:
-                print(f"\n❌ 处理「{talker}」时出错 (在片段处理中或之前): {str(e)}")
-                logger.error(f"处理「{talker}」时出错: {str(e)}")
+                print(f"\n❌ 处理「{talker_name}」时出错 (在片段处理中或之前): {str(e)}")
+                logger.error(f"处理「{talker_name}」时出错: {str(e)}")
                 continue
+
+        # 所有群日报处理完成后，保存统一的URL记录文件
+        if all_reports_info:
+            urls_file = save_report_urls_to_unified_file(all_reports_info)
+            if urls_file:
+                print(f"✅ 所有群日报的URL信息已统一保存到: {urls_file}")
+                
+            # 自动发送URL到微信群
+            try:
+                from wx_sender import send_url_to_wechat_group
+                
+                print("\n--- 开始向微信群发送群日报URL ---")
+                # 获取发送延迟时间
+                delay = CHAT_DEMO_CFG.get('wechat_send_delay_seconds', 5)
+                
+                # 发送URL到对应群聊
+                success_count = 0
+                # 筛选需要发送到微信的报告
+                valid_reports = [r for r in all_reports_info if r.get('html_url') and r.get('talker') and r.get('auto_send_to_wechat', False)]
+                
+                if not valid_reports:
+                    print("没有需要发送到微信的群日报，跳过微信发送步骤。")
+                else:
+                    for report in valid_reports:
+                        talker = report['talker']
+                        url = report['html_url']
+                        # 使用talker个性化的消息前缀
+                        message_prefix = report.get('wechat_message_prefix', "今日群日报已生成：")
+                        
+                        print(f"⏳ 正在向群聊 '{talker}' 发送URL...")
+                        if send_url_to_wechat_group(talker, url, message_prefix):
+                            success_count += 1
+                            print(f"✅ 成功向群聊 '{talker}' 发送URL")
+                        else:
+                            print(f"❌ 向群聊 '{talker}' 发送URL失败")
+                            
+                        # 每个群发送后等待一段时间
+                        time.sleep(delay)
+                        
+                    print(f"--- 群日报URL发送完成: 成功 {success_count}/{len(valid_reports)} ---")
+            except ImportError as e:
+                print(f"❌ 导入wx_sender模块失败，请确保已安装pyautogui和pyperclip库: {str(e)}")
+                logger.error(f"导入wx_sender模块失败: {str(e)}")
+            except Exception as e:
+                print(f"❌ 发送群日报URL到微信群失败: {str(e)}")
+                logger.error(f"发送群日报URL到微信群失败: {str(e)}")
+            
+            # 自动同步URL到飞书多维表格
+            try:
+                from feishu_sender import send_urls_to_feishu_batch
+                
+                print("\n--- 开始同步群日报URL到飞书多维表格 ---")
+                
+                # 筛选需要同步到飞书的报告
+                feishu_reports = [r for r in all_reports_info if r.get('auto_sync_to_feishu', False)]
+                
+                if not feishu_reports:
+                    print("没有需要同步到飞书的群日报，跳过飞书同步步骤。")
+                else:
+                    # 批量发送URL到飞书
+                    result = send_urls_to_feishu_batch(feishu_reports)
+                    
+                    if result['success'] > 0:
+                        print(f"✅ 成功同步 {result['success']}/{result['total']} 个URL到飞书多维表格")
+                    
+                    if result['failed'] > 0:
+                        print(f"⚠️ {result['failed']} 个URL同步失败，详情请查看日志")
+                        
+                    print("--- 飞书同步完成 ---")
+            except ImportError as e:
+                print(f"❌ 导入feishu_sender模块失败，请确保已安装requests库: {str(e)}")
+                logger.error(f"导入feishu_sender模块失败: {str(e)}")
+            except Exception as e:
+                print(f"❌ 同步群日报URL到飞书失败: {str(e)}")
+                logger.error(f"同步群日报URL到飞书失败: {str(e)}")
 
         print("-" * 50)
         print("🎉 所有任务处理完成！")

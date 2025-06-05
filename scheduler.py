@@ -179,8 +179,8 @@ def main():
     scheduled_hour = int(SCHEDULED_TIME.split(':')[0])
     
     if current_hour >= scheduled_hour:
-        logger.info(f"当前时间已过{SCHEDULED_TIME}，是否要立即执行一次任务？(y/n)，{INPUT_TIMEOUT}秒内未输入则默认取消")
-        choice = get_input_with_timeout(f"当前时间已过{SCHEDULED_TIME}，是否要立即执行一次任务？(y/n)，{INPUT_TIMEOUT}秒内未输入则默认取消: ", INPUT_TIMEOUT)
+        logger.info(f"当前时间已过{SCHEDULED_TIME}，是否要立即执行一次任务？(y/n)，{INPUT_TIMEOUT}秒内未输入则默认执行")
+        choice = get_input_with_timeout(f"当前时间已过{SCHEDULED_TIME}，是否要立即执行一次任务？(y/n)，{INPUT_TIMEOUT}秒内未输入则默认执行: ", INPUT_TIMEOUT)
         
         if choice and choice.lower() == 'y':
             logger.info("用户选择立即执行任务")
