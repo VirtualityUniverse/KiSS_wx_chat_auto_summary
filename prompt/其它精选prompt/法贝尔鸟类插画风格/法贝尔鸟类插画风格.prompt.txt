@@ -35,26 +35,35 @@
 
 ```html
 
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
     <meta charset="UTF-8">
     <title>[群名称]日报 - [日期]</title>
-    <style>
-        /* 达芬奇风格的CSS样式 */
-        :root {
-            --parchment: #f2e8c9;
-            --parchment-dark: #e8d7a9;
-            --ink-primary: #3c2415;
-            --ink-secondary: #5f4b32;
-            --accent-red: #9b2e2e;
-            --accent-gold: #b4924a;
-            --accent-blue: #4e5d72;
-            --accent-green: #637251;
-            --accent-sepia: #a6947c;
-        }
 
-        @font-face {
-            font-family: 'DaVinciScript';
-            src: url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+    <!--防止阻塞-->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* 法贝尔鸟类插画风格的CSS样式 */
+        /*@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');*/
+
+        :root {
+            --bg-primary: #f5f2e9;
+            --bg-secondary: #f0ead6;
+            --bg-tertiary: #fff9e6;
+            --bg-card: #fffcf5;
+            --text-primary: #3c2f2f;
+            --text-secondary: #5d5149;
+            --accent-primary: #8b4513;
+            --accent-secondary: #a63a3a;
+            --accent-tertiary: #2c5545;
+            --accent-blue: #235789;
+            --accent-green: #606c38;
+            --accent-yellow: #d9a566;
         }
 
         * {
@@ -64,93 +73,78 @@
         }
 
         body {
-            font-family: 'Cormorant Garamond', 'STKaiti', 'KaiTi', serif;
-            background-color: var(--parchment);
-            color: var(--ink-primary);
+            font-family: 'Libre Baskerville', Georgia, serif;
+            background-color: var(--bg-primary);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d1c9b7' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            color: var(--text-primary);
             line-height: 1.6;
-            font-size: 18px;
+            font-size: 16px;
             width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23785c38' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23594a32' fill-opacity='0.07' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 5v1H5z'/%3E%3Cpath d='M6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: -1;
         }
 
         header {
             text-align: center;
-            padding: 30px 0;
-            background-color: var(--parchment-dark);
-            margin-bottom: 30px;
-            border: 3px double var(--ink-secondary);
+            padding: 40px 0;
+            background-color: var(--bg-secondary);
+            margin-bottom: 40px;
+            border: 1px solid #e0d8c0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2v2H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20z' fill='%23594a32' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            overflow: hidden;
+            border-radius: 5px;
         }
 
-        header::before, header::after {
-            content: "❦";
-            font-size: 30px;
-            color: var(--accent-red);
-            display: inline-block;
+        /* 添加鸟类装饰 */
+        header:before, header:after {
+            content: "";
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            width: 150px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.6;
         }
 
-        header::before {
-            left: 30px;
+        header:before {
+            top: 20px;
+            left: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 160'%3E%3Cpath d='M190,50c-8.2-11.8-20.4-11.4-32.2-5.2c-3.6-12.8-12.4-19.2-24.6-17.6c-9.8-7.4-18-9-27,1.8c-5.6-5.2-10-3.8-15.4,1.4 c-4.8-1.2-7.2,1.4-7.2,6c-5,1.4-8.2,4.8-6.6,10.4c-5.6,2.6-6.2,6.8-3.6,12c-7.6,7.8-7.4,15.4-0.2,23.2c-1.2,4.8,0.8,8.2,5.6,9.6 c0.4,5.2,3.4,7.4,8.6,6.8c2.6,6.6,7.4,8.2,14,4.8c4.6,3.8,9,3.8,13.4-0.4c10.2,3.2,17.8-0.2,24.6-9.6c11.2,3.2,16-2.8,18.6-12.6 c7.2,0.2,10.8-3.8,11-11.2c5.4-0.4,6.8-4,6.8-9C181.4,55.2,185.6,50.4,190,50z' fill='%238b4513' fill-opacity='0.2'/%3E%3C/svg%3E");
         }
 
-        header::after {
-            right: 30px;
+        header:after {
+            bottom: 20px;
+            right: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 160'%3E%3Cpath d='M10,50c8.2-11.8,20.4-11.4,32.2-5.2c3.6-12.8,12.4-19.2,24.6-17.6c9.8-7.4,18-9,27,1.8c5.6-5.2,10-3.8,15.4,1.4 c4.8-1.2,7.2,1.4,7.2,6c5,1.4,8.2,4.8,6.6,10.4c5.6,2.6,6.2,6.8,3.6,12c7.6,7.8,7.4,15.4,0.2,23.2c1.2,4.8-0.8,8.2-5.6,9.6 c-0.4,5.2-3.4,7.4-8.6,6.8c-2.6,6.6-7.4,8.2-14,4.8c-4.6,3.8-9,3.8-13.4-0.4c-10.2,3.2-17.8-0.2-24.6-9.6c-11.2,3.2-16-2.8-18.6-12.6 c-7.2,0.2-10.8-3.8-11-11.2c-5.4-0.4-6.8-4-6.8-9C18.6,55.2,14.4,50.4,10,50z' fill='%232c5545' fill-opacity='0.2'/%3E%3C/svg%3E");
         }
 
         h1 {
-            font-size: 46px;
-            font-weight: normal;
-            color: var(--accent-red);
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--accent-tertiary);
             margin-bottom: 15px;
-            font-family: 'Cormorant Garamond', 'STKaiti', 'KaiTi', serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-family: 'Cormorant Garamond', serif;
             position: relative;
             display: inline-block;
         }
 
-        h1::before, h1::after {
-            content: "✦";
-            font-size: 24px;
-            color: var(--accent-gold);
-            display: inline-block;
+        h1:after {
+            content: "";
+            display: block;
+            width: 80%;
+            height: 4px;
+            background-image: url("data:image/svg+xml,%3Csvg width='120' height='4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,2 C30,4 60,0 90,2 C120,4 150,0 180,2 C210,4 240,0 270,2 C300,4 330,0 360,2' stroke='%238b4513' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        h1::before {
-            left: -40px;
-        }
-
-        h1::after {
-            right: -40px;
+            bottom: -6px;
+            left: 10%;
         }
 
         .date {
-            font-size: 22px;
-            color: var(--ink-secondary);
-            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
             font-style: italic;
         }
 
@@ -161,336 +155,384 @@
         }
 
         .meta-info span {
-            background-color: rgba(95, 75, 50, 0.1);
+            background-color: var(--bg-tertiary);
             padding: 5px 15px;
-            border: 1px solid var(--ink-secondary);
-            font-size: 16px;
-            position: relative;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid #e0d8c0;
         }
 
         section {
-            background-color: var(--parchment-dark);
+            background-color: var(--bg-secondary);
             margin-bottom: 40px;
             padding: 30px;
-            border: 1px solid var(--ink-secondary);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0d8c0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             position: relative;
-            background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23785c38' fill-opacity='0.05'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        section::before {
+        /* 为每个部分添加特定的鸟类图标 */
+        section:before {
             content: "";
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
             position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            border: 1px solid rgba(95, 75, 50, 0.2);
-            pointer-events: none;
+            top: -20px;
+            left: 30px;
+            z-index: 1;
+        }
+
+        .hot-topics:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,10c-6,8-14,13-25,15c0,15,5,30,25,50c20-20,25-35,25-50C64,23,56,18,50,10z' fill='%23a63a3a'/%3E%3C/svg%3E");
+        }
+
+        .tutorials:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,40c0,0,10-15,30-15c20,0,30,15,30,15s-10,15-30,15C30,55,20,40,20,40z M50,45c2.8,0,5-2.2,5-5c0-2.8-2.2-5-5-5c-2.8,0-5,2.2-5,5C45,42.8,47.2,45,50,45z' fill='%23235789'/%3E%3C/svg%3E");
+        }
+
+        .important-messages:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M30,30c0,0,10,30,20,30c10,0,20-30,20-30s-10-10-20-10C40,20,30,30,30,30z M50,70c-3,0-5,2-5,5c0,3,2,5,5,5c3,0,5-2,5-5C55,72,53,70,50,70z' fill='%23d9a566'/%3E%3C/svg%3E");
+        }
+
+        .interesting-dialogues:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M25,25c-5,5-5,15,0,20c5,5,15,5,20,0c5-5,5-15,0-20C40,20,30,20,25,25z M55,55c-5,5-5,15,0,20c5,5,15,5,20,0c5-5,5-15,0-20C70,50,60,50,55,55z' fill='%232c5545'/%3E%3C/svg%3E");
+        }
+
+        .questions-answers:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,50c0-16.6,13.4-30,30-30c16.6,0,30,13.4,30,30c0,16.6-13.4,30-30,30C33.4,80,20,66.6,20,50z M44,45c0,3.3,2.7,6,6,6c3.3,0,6-2.7,6-6c0-3.3-2.7-6-6-6C46.7,39,44,41.7,44,45z' fill='%238b4513'/%3E%3C/svg%3E");
+        }
+
+        .analytics:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,80h60v-10h-60V80z M20,60h40v-10h-40V60z M20,40h20v-10h-20V40z' fill='%23606c38'/%3E%3C/svg%3E");
+        }
+
+        .word-cloud:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M25,60c0-8.3,6.7-15,15-15c8.3,0,15,6.7,15,15c0,8.3-6.7,15-15,15C31.7,75,25,68.3,25,60z M60,45c0-5.5,4.5-10,10-10c5.5,0,10,4.5,10,10c0,5.5-4.5,10-10,10C64.5,55,60,50.5,60,45z M15,40c0-4.4,3.6-8,8-8c4.4,0,8,3.6,8,8c0,4.4-3.6,8-8,8C18.6,48,15,44.4,15,40z' fill='%23235789'/%3E%3C/svg%3E");
         }
 
         h2 {
-            font-size: 32px;
-            font-weight: normal;
-            color: var(--accent-blue);
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--accent-tertiary);
             margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--accent-blue);
-            text-align: center;
-            font-family: 'Cormorant Garamond', 'STKaiti', 'KaiTi', serif;
+            padding-bottom: 10px;
+            border-bottom: 3px double #d1c9b7;
+            font-family: 'Cormorant Garamond', serif;
             position: relative;
         }
 
-        h2::before, h2::after {
-            content: "✧";
-            font-size: 20px;
-            color: var(--accent-gold);
-            display: inline-block;
+        h2:after {
+            content: "";
             position: absolute;
-            top: 50%;
-            transform: translateY(-70%);
-        }
-
-        h2::before {
+            bottom: -3px;
             left: 0;
-        }
-
-        h2::after {
-            right: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-tertiary);
         }
 
         h3 {
-            font-size: 26px;
-            font-weight: normal;
-            color: var(--accent-gold);
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent-primary);
             margin: 20px 0 15px 0;
-            font-family: 'Cormorant Garamond', 'STKaiti', 'KaiTi', serif;
-            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
             position: relative;
-            padding-bottom: 10px;
+            display: inline-block;
         }
 
-        h3::after {
+        h3:after {
             content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-image: url("data:image/svg+xml,%3Csvg width='120' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,1 C30,2 60,0 90,1 C120,2 150,0 180,1' stroke='%238b4513' stroke-width='1' fill='none' stroke-dasharray='1,3'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
             position: absolute;
-            bottom: 0;
-            left: 25%;
-            right: 25%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--accent-gold), transparent);
+            bottom: -3px;
         }
 
         h4 {
-            font-size: 22px;
-            font-weight: normal;
-            color: var(--accent-red);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-secondary);
             margin: 15px 0 10px 0;
-            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         p {
             margin-bottom: 15px;
             line-height: 1.7;
-            text-align: justify;
-            hyphens: auto;
         }
 
         ul, ol {
-            margin-left: 25px;
+            margin-left: 20px;
             margin-bottom: 20px;
+            list-style-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Ccircle cx='6' cy='6' r='3' fill='%238b4513'/%3E%3C/svg%3E");
         }
 
         li {
             margin-bottom: 8px;
-            position: relative;
-        }
-
-        li::marker {
-            color: var(--accent-gold);
+            padding-left: 5px;
         }
 
         a {
             color: var(--accent-blue);
             text-decoration: none;
-            border-bottom: 1px dotted var(--accent-blue);
+            position: relative;
             transition: all 0.3s ease;
         }
 
         a:hover {
-            color: var(--accent-red);
-            border-bottom-color: var(--accent-red);
+            color: var(--accent-tertiary);
         }
 
-        /* 达芬奇风格的卡片容器 */
+        a:after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--accent-blue);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        a:hover:after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* 卡片容器样式 */
         .topics-container, .tutorials-container, .messages-container,
         .dialogues-container, .qa-container, .participants-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 30px;
+            gap: 25px;
         }
 
-        /* 达芬奇风格的卡片 */
+        /* 卡片样式 */
         .topic-card, .tutorial-card, .message-card,
         .dialogue-card, .qa-card, .participant-item, .night-owl-item {
-            background-color: var(--parchment);
+            background-color: var(--bg-card);
             padding: 25px;
-            border: 1px solid var(--ink-secondary);
+            border: 1px solid #e0d8c0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             position: relative;
-            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        .topic-card::before, .tutorial-card::before, .message-card::before,
-        .dialogue-card::before, .qa-card::before, .participant-item::before, .night-owl-item::before {
+        /* 添加羽毛装饰到卡片 */
+        .topic-card:before, .tutorial-card:before, .message-card:before,
+        .dialogue-card:before, .qa-card:before {
             content: "";
             position: absolute;
             top: 10px;
-            left: 10px;
             right: 10px;
-            bottom: 10px;
-            border: 1px dashed rgba(95, 75, 50, 0.3);
-            pointer-events: none;
+            width: 40px;
+            height: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,80c20-40,40-60,60-60c-10,20-20,40-60,60z' fill='%23d1c9b7' fill-opacity='0.2'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            z-index: 0;
         }
 
         /* 话题卡片 */
         .topic-category {
             display: inline-block;
-            color: var(--parchment);
-            background-color: var(--accent-blue);
+            background-color: rgba(35, 87, 137, 0.1);
+            color: var(--accent-blue);
             padding: 3px 12px;
-            font-size: 16px;
-            margin-bottom: 12px;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(35, 87, 137, 0.2);
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            letter-spacing: 1px;
         }
 
         .topic-keywords {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 12px 0;
         }
 
         .keyword {
-            background-color: rgba(95, 75, 50, 0.1);
-            padding: 4px 12px;
-            font-size: 16px;
-            border: 1px solid var(--ink-secondary);
+            background-color: rgba(44, 85, 69, 0.1);
+            color: var(--accent-tertiary);
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            border: 1px solid rgba(44, 85, 69, 0.2);
         }
 
         .topic-mentions {
-            color: var(--accent-red);
+            color: var(--accent-secondary);
             font-weight: 600;
-            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         /* 教程卡片 */
         .tutorial-type {
             display: inline-block;
-            color: var(--parchment);
-            background-color: var(--accent-red);
+            background-color: rgba(166, 58, 58, 0.1);
+            color: var(--accent-secondary);
             padding: 3px 12px;
-            font-size: 16px;
-            margin-bottom: 12px;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(166, 58, 58, 0.2);
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            letter-spacing: 1px;
         }
 
         .tutorial-meta {
-            color: var(--ink-secondary);
-            margin-bottom: 15px;
-            font-size: 16px;
-            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-size: 15px;
         }
 
         .tutorial-category {
-            margin-top: 15px;
+            margin-top: 12px;
             font-style: italic;
-            color: var(--ink-secondary);
-            text-align: right;
+            color: var(--text-secondary);
+            font-family: 'Cormorant Garamond', serif;
         }
 
         /* 消息卡片 */
         .message-meta {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .message-meta span {
             margin-right: 15px;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .message-type {
-            color: var(--parchment);
-            background-color: var(--accent-red);
+            background-color: rgba(217, 165, 102, 0.1);
+            color: var(--accent-yellow);
             padding: 3px 12px;
-            font-style: italic;
+            border-radius: 3px;
+            border: 1px solid rgba(217, 165, 102, 0.2);
         }
 
         .priority {
-            padding: 3px 12px;
-            font-style: italic;
-            color: var(--parchment);
+            padding: 3px 10px;
+            border-radius: 3px;
         }
 
         .priority-high {
-            background-color: var(--accent-red);
+            background-color: rgba(166, 58, 58, 0.1);
+            color: var(--accent-secondary);
+            border: 1px solid rgba(166, 58, 58, 0.2);
         }
 
         .priority-medium {
-            background-color: var(--accent-gold);
+            background-color: rgba(139, 69, 19, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(139, 69, 19, 0.2);
         }
 
         .priority-low {
-            background-color: var(--accent-blue);
+            background-color: rgba(35, 87, 137, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(35, 87, 137, 0.2);
         }
 
         /* 对话卡片 */
         .dialogue-type {
             display: inline-block;
-            color: var(--parchment);
-            background-color: var(--accent-blue);
+            background-color: rgba(44, 85, 69, 0.1);
+            color: var(--accent-tertiary);
             padding: 3px 12px;
-            font-size: 16px;
-            margin-bottom: 12px;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(44, 85, 69, 0.2);
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            letter-spacing: 1px;
         }
 
         .dialogue-content {
-            background-color: rgba(95, 75, 50, 0.05);
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(95, 75, 50, 0.2);
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px dashed #d1c9b7;
+            border-radius: 3px;
         }
 
         .dialogue-highlight {
             font-style: italic;
-            color: var(--accent-red);
-            margin: 15px 0;
+            color: var(--accent-primary);
+            margin: 12px 0;
             font-weight: 600;
-            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
             position: relative;
-            padding: 10px 30px;
+            padding-left: 20px;
         }
 
-        .dialogue-highlight::before, .dialogue-highlight::after {
-            content: '"';
-            font-size: 36px;
-            color: var(--accent-gold);
+        .dialogue-highlight:before {
+            content: "" ";
             position: absolute;
-            top: 5px;
-        }
-
-        .dialogue-highlight::before {
             left: 0;
-        }
-
-        .dialogue-highlight::after {
-            right: 0;
-            transform: rotate(180deg);
+            top: -5px;
+            font-size: 30px;
+            color: var(--accent-primary);
+            opacity: 0.5;
         }
 
         /* 问答卡片 */
         .question {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(95, 75, 50, 0.3);
+            margin-bottom: 18px;
         }
 
         .question-meta, .answer-meta {
-            color: var(--ink-secondary);
+            color: var(--text-secondary);
             margin-bottom: 8px;
-            font-size: 16px;
-            font-style: italic;
+            font-size: 14px;
         }
 
         .question-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             margin-top: 12px;
         }
 
         .tag {
-            background-color: rgba(95, 75, 50, 0.1);
-            padding: 4px 12px;
+            background-color: rgba(96, 108, 56, 0.1);
+            color: var(--accent-green);
+            padding: 3px 10px;
+            border-radius: 3px;
             font-size: 14px;
-            border: 1px solid var(--ink-secondary);
+            border: 1px solid rgba(96, 108, 56, 0.2);
         }
 
         .answer {
-            background-color: rgba(95, 75, 50, 0.05);
-            padding: 20px;
-            margin-top: 15px;
-            border: 1px solid rgba(95, 75, 50, 0.2);
-            position: relative;
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            margin-top: 12px;
+            border: 1px dashed #d1c9b7;
+            border-radius: 3px;
         }
 
         .accepted-badge {
-            background-color: var(--accent-gold);
-            color: var(--parchment);
+            background-color: rgba(139, 69, 19, 0.1);
+            color: var(--accent-primary);
             padding: 3px 12px;
+            border-radius: 3px;
             font-size: 14px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
         }
 
@@ -498,123 +540,145 @@
         .heatmap-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .heat-item {
+            background-color: var(--bg-card);
             padding: 15px;
-            background-color: rgba(95, 75, 50, 0.05);
-            border: 1px solid rgba(95, 75, 50, 0.2);
+            border: 1px solid #e0d8c0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .heat-topic {
             font-weight: 600;
             margin-bottom: 8px;
-            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .heat-bar {
-            height: 25px;
-            background-color: rgba(95, 75, 50, 0.1);
+            height: 22px;
+            background-color: var(--bg-secondary);
             margin: 8px 0;
-            border: 1px solid var(--ink-secondary);
+            border-radius: 3px;
             overflow: hidden;
+            border: 1px solid #e0d8c0;
         }
 
         .heat-fill {
             height: 100%;
+            border-radius: 2px;
         }
 
         /* 话唠榜 */
+        .participant-item {
+            background-color: var(--bg-card);
+            position: relative;
+            padding-left: 60px;
+        }
+
         .participant-rank {
-            font-size: 40px;
-            font-weight: normal;
-            color: var(--accent-gold);
-            margin-right: 20px;
-            float: left;
-            font-family: 'Cormorant Garamond', 'STKaiti', 'KaiTi', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .participant-name {
             font-weight: 600;
-            font-size: 22px;
+            font-size: 18px;
             margin-bottom: 8px;
-            color: var(--accent-blue);
+            color: var(--accent-tertiary);
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .participant-count {
-            color: var(--accent-red);
+            color: var(--accent-blue);
             margin-bottom: 12px;
+            font-family: 'Libre Baskerville', serif;
             font-style: italic;
         }
 
         .participant-characteristics, .participant-words {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             margin-top: 12px;
         }
 
         .characteristic {
-            background-color: rgba(95, 75, 50, 0.1);
-            padding: 4px 12px;
+            background-color: rgba(166, 58, 58, 0.1);
+            color: var(--accent-secondary);
+            padding: 3px 10px;
+            border-radius: 3px;
             font-size: 14px;
-            border: 1px solid var(--ink-secondary);
+            border: 1px solid rgba(166, 58, 58, 0.2);
         }
 
         .word {
-            background-color: rgba(95, 75, 50, 0.1);
-            padding: 4px 12px;
+            background-color: rgba(44, 85, 69, 0.1);
+            color: var(--accent-tertiary);
+            padding: 3px 10px;
+            border-radius: 3px;
             font-size: 14px;
-            border: 1px solid var(--accent-red);
+            border: 1px solid rgba(44, 85, 69, 0.2);
         }
 
         /* 熬夜冠军 */
         .night-owl-item {
-            background: linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+            background: var(--bg-secondary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23d1c9b7' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23d1c9b7'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
             padding: 25px;
             display: flex;
-            align-items: center;
-            border: 2px solid var(--accent-gold);
+            align-items: flex-start;
+            position: relative;
         }
 
         .owl-crown {
-            font-size: 48px;
-            margin-right: 25px;
-            color: var(--accent-gold);
+            font-size: 40px;
+            margin-right: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .owl-name {
             font-weight: 600;
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 8px;
-            color: var(--accent-red);
+            color: var(--accent-tertiary);
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .owl-title {
-            color: var(--accent-gold);
+            color: var(--accent-primary);
             font-style: italic;
             margin-bottom: 12px;
-            font-size: 18px;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .owl-time, .owl-messages {
-            color: var(--ink-secondary);
+            color: var(--text-secondary);
             margin-bottom: 8px;
-            font-style: italic;
         }
 
         .owl-note {
             font-size: 14px;
-            color: var(--ink-secondary);
-            margin-top: 15px;
+            color: var(--text-secondary);
+            margin-top: 12px;
             font-style: italic;
-            border-top: 1px dotted var(--ink-secondary);
-            padding-top: 10px;
+            border-top: 1px dashed #d1c9b7;
+            padding-top: 8px;
         }
 
-        /* 词云 - 达芬奇草图风格 */
+        /* 词云 - 云朵样式 */
         .cloud-container {
             position: relative;
-            margin: 0 auto;
-            padding: 30px 0;
+            margin: 30px auto;
+            padding: 20px 0;
         }
 
         .cloud-wordcloud {
@@ -622,19 +686,23 @@
             width: 600px;
             height: 400px;
             margin: 0 auto;
-            background-color: rgba(95, 75, 50, 0.05);
-            border-radius: 300px / 200px;
-            border: 1px solid var(--ink-secondary);
+            background-color: var(--bg-secondary);
+            border-radius: 50%;
+            box-shadow: 40px 40px 0 -5px var(--bg-secondary),
+            80px 10px 0 -10px var(--bg-secondary),
+            110px 35px 0 -5px var(--bg-secondary),
+            -40px 50px 0 -8px var(--bg-secondary),
+            -70px 20px 0 -10px var(--bg-secondary);
             overflow: visible;
-            box-shadow: inset 0 0 20px rgba(95, 75, 50, 0.1);
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23594a32' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            border: 1px solid #e0d8c0;
         }
 
         .cloud-word {
             position: absolute;
             transform-origin: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            font-family: 'Cormorant Garamond', 'STKaiti', 'KaiTi', serif;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .cloud-word:hover {
@@ -643,7 +711,7 @@
         }
 
         .cloud-legend {
-            margin-top: 60px;
+            margin-top: 70px;
             display: flex;
             justify-content: center;
             gap: 30px;
@@ -652,348 +720,359 @@
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .legend-color {
             width: 20px;
             height: 20px;
-            border-radius: 0;
-            border: 1px solid var(--ink-secondary);
+            border-radius: 50%;
+            border: 1px solid #e0d8c0;
         }
 
-        /* 达芬奇风格底部 */
+        /* 底部 */
         footer {
             text-align: center;
             padding: 30px 0;
             margin-top: 60px;
-            background-color: var(--parchment-dark);
-            color: var(--ink-secondary);
-            font-size: 16px;
-            border-top: 3px double var(--ink-secondary);
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 14px;
+            border: 1px solid #e0d8c0;
+            border-radius: 5px;
             position: relative;
-            font-style: italic;
+            overflow: hidden;
         }
 
-        footer::before {
-            content: "Anno Domini";
+        footer:before, footer:after {
+            content: "";
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--parchment-dark);
-            padding: 0 20px;
-            color: var(--accent-gold);
-            font-size: 18px;
+            width: 80px;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.3;
+        }
+
+        footer:before {
+            bottom: 15px;
+            left: 15px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,50c0,0,5-20,30-20s30,20,30,20s-5,20-30,20S20,50,20,50z' fill='%238b4513'/%3E%3C/svg%3E");
+        }
+
+        footer:after {
+            bottom: 15px;
+            right: 15px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,50c0,0,5-20,30-20s30,20,30,20s-5,20-30,20S20,50,20,50z' fill='%232c5545'/%3E%3C/svg%3E");
         }
 
         footer p {
-            margin: 8px 0;
-            text-align: center;
+            margin: 5px 0;
         }
 
         .disclaimer {
-            margin-top: 20px;
+            margin-top: 15px;
             font-style: italic;
-            padding-top: 15px;
-            border-top: 1px solid rgba(95, 75, 50, 0.3);
-            font-size: 14px;
+            padding-top: 10px;
+            border-top: 1px dashed #d1c9b7;
         }
 
-        /* 达芬奇风格装饰元素 */
-        .davinci-ornament {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 24px;
-            color: var(--accent-gold);
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 1200px) {
+        /* 媒体查询以确保在移动设备上的响应式布局 */
+        @media (max-width: 1220px) {
             body {
                 width: 95%;
                 padding: 10px;
             }
+        }
 
+        @media (max-width: 768px) {
             .cloud-wordcloud {
                 width: 90%;
-                height: 350px;
+                height: 300px;
+            }
+
+            .meta-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .meta-info span {
+                display: block;
+            }
+
+            header:before, header:after {
+                width: 80px;
+                height: 60px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>[群名称]日报</h1>
-        <p class="date">[日期范围]</p>
-        <div class="meta-info">
-            <span>总消息数：[数量]</span>
-            <span>日均消息数：[数量]</span>
-            <span>活跃用户：[数量]</span>
-            <span>时间范围：[时间范围]</span>
-        </div>
-    </header>
+<header>
+    <h1>[群名称]日报</h1>
+    <p class="date">[日期范围]</p>
+    <div class="meta-info">
+        <span>总消息数：[数量]</span>
+        <span>日均消息数：[数量]</span>
+        <span>活跃用户：[数量]</span>
+        <span>时间范围：[时间范围]</span>
+    </div>
+</header>
 
-    <!-- 1. 今日讨论热点 -->
-    <section class="hot-topics">
-        <h2>今日讨论热点</h2>
-        <div class="davinci-ornament">✦ ✦ ✦</div>
-        <div class="topics-container">
-            <!-- 在这里填充讨论热点内容，达芬奇风格 -->
-            <div class="topic-card">
-                <h3>[热点话题名称]</h3>
-                <div class="topic-category">[话题分类]</div>
-                <p class="topic-summary">[简要总结(50-100字)]</p>
-                <div class="topic-keywords">
-                    <span class="keyword">[关键词1]</span>
-                    <span class="keyword">[关键词2]</span>
-                    <!-- 添加更多关键词 -->
-                </div>
-                <div class="topic-mentions">提及次数：[次数]</div>
+<!-- 1. 今日讨论热点 -->
+<section class="hot-topics">
+    <h2>今日讨论热点</h2>
+    <div class="topics-container">
+        <!-- 在这里填充讨论热点内容，严格按照以下格式，保留3-5个话题 -->
+        <div class="topic-card">
+            <h3>[热点话题名称]</h3>
+            <div class="topic-category">[话题分类]</div>
+            <p class="topic-summary">[简要总结(50-100字)]</p>
+            <div class="topic-keywords">
+                <span class="keyword">[关键词1]</span>
+                <span class="keyword">[关键词2]</span>
+                <!-- 添加更多关键词 -->
             </div>
-            <!-- 复制上述卡片结构添加更多话题 -->
+            <div class="topic-mentions">提及次数：[次数]</div>
         </div>
-    </section>
+        <!-- 复制上述卡片结构添加更多话题 -->
+    </div>
+</section>
 
-    <!-- 2. 实用教程与资源分享 -->
-    <section class="tutorials">
-        <h2>实用教程与资源分享</h2>
-        <div class="davinci-ornament">✦ ✦ ✦</div>
-        <div class="tutorials-container">
-            <!-- 在这里填充教程和资源内容，达芬奇风格 -->
-            <div class="tutorial-card">
-                <div class="tutorial-type">[TUTORIAL | NEWS | RESOURCE]</div>
-                <h3>[分享的教程或资源标题]</h3>
-                <div class="tutorial-meta">
-                    <span class="shared-by">分享者：[昵称]</span>
-                    <span class="share-time">时间：[时间]</span>
-                </div>
-                <p class="tutorial-summary">[内容简介]</p>
-                <div class="key-points">
-                    <h4>要点：</h4>
-                    <ul>
-                        <li>[要点1]</li>
-                        <li>[要点2]</li>
-                        <!-- 添加更多要点 -->
-                    </ul>
-                </div>
-                <div class="tutorial-link">
-                    <a href="[URL]" class="link valid">查看原文: [域名]</a>
-                </div>
-                <div class="tutorial-category">分类：[分类]</div>
+<!-- 2. 实用教程与资源分享 -->
+<section class="tutorials">
+    <h2>实用教程与资源分享</h2>
+    <div class="tutorials-container">
+        <!-- 在这里填充教程和资源内容，严格按照以下格式 -->
+        <div class="tutorial-card">
+            <div class="tutorial-type">[TUTORIAL | NEWS | RESOURCE]</div>
+            <h3>[分享的教程或资源标题]</h3>
+            <div class="tutorial-meta">
+                <span class="shared-by">分享者：[昵称]</span>
+                <span class="share-time">时间：[时间]</span>
             </div>
-            <!-- 复制上述卡片结构添加更多资源 -->
-        </div>
-    </section>
-
-    <!-- 3. 重要消息汇总 -->
-    <section class="important-messages">
-        <h2>重要消息汇总</h2>
-        <div class="davinci-ornament">✦ ✦ ✦</div>
-        <div class="messages-container">
-            <!-- 在这里填充重要消息内容，达芬奇风格 -->
-            <div class="message-card">
-                <div class="message-meta">
-                    <span class="time">[消息时间]</span>
-                    <span class="sender">[发送者昵称]</span>
-                    <span class="message-type">[NOTICE | EVENT | ANNOUNCEMENT | OTHER]</span>
-                    <span class="priority priority-high">优先级：[高|中|低]</span>
-                </div>
-                <p class="message-content">[消息内容]</p>
-                <div class="message-full-content">
-                    <p>[完整通知内容]</p>
-                </div>
+            <p class="tutorial-summary">[内容简介]</p>
+            <div class="key-points">
+                <h4>要点：</h4>
+                <ul>
+                    <li>[要点1]</li>
+                    <li>[要点2]</li>
+                    <!-- 添加更多要点 -->
+                </ul>
             </div>
-            <!-- 复制上述卡片结构添加更多消息 -->
+            <div class="tutorial-link">
+                <a href="[URL]" class="link valid">查看原文: [域名]</a>
+            </div>
+            <div class="tutorial-category">分类：[分类]</div>
         </div>
-    </section>
+        <!-- 复制上述卡片结构添加更多资源 -->
+    </div>
+</section>
 
-    <!-- 4. 有趣对话或金句 -->
-    <section class="interesting-dialogues">
-        <h2>有趣对话或金句</h2>
-        <div class="davinci-ornament">✦ ✦ ✦</div>
-        <div class="dialogues-container">
-            <!-- 在这里填充对话内容，达芬奇风格 -->
-            <div class="dialogue-card">
-                <div class="dialogue-type">[DIALOGUE | QUOTE]</div>
-                <div class="dialogue-content">
-                    <div class="message">
-                        <div class="message-meta">
-                            <span class="speaker">[说话者昵称]</span>
-                            <span class="time">[发言时间]</span>
-                        </div>
-                        <p class="message-content">[消息内容]</p>
+<!-- 3. 重要消息汇总 -->
+<section class="important-messages">
+    <h2>重要消息汇总</h2>
+    <div class="messages-container">
+        <!-- 在这里填充重要消息内容，严格按照以下格式 -->
+        <div class="message-card">
+            <div class="message-meta">
+                <span class="time">[消息时间]</span>
+                <span class="sender">[发送者昵称]</span>
+                <span class="message-type">[NOTICE | EVENT | ANNOUNCEMENT | OTHER]</span>
+                <span class="priority priority-high">优先级：[高|中|低]</span>
+            </div>
+            <p class="message-content">[消息内容]</p>
+            <div class="message-full-content">
+                <p>[完整通知内容]</p>
+            </div>
+        </div>
+        <!-- 复制上述卡片结构添加更多消息 -->
+    </div>
+</section>
+
+<!-- 4. 有趣对话或金句 -->
+<section class="interesting-dialogues">
+    <h2>有趣对话或金句</h2>
+    <div class="dialogues-container">
+        <!-- 在这里填充对话内容，严格按照以下格式 -->
+        <div class="dialogue-card">
+            <div class="dialogue-type">[DIALOGUE | QUOTE]</div>
+            <div class="dialogue-content">
+                <div class="message">
+                    <div class="message-meta">
+                        <span class="speaker">[说话者昵称]</span>
+                        <span class="time">[发言时间]</span>
                     </div>
-                    <div class="message">
-                        <div class="message-meta">
-                            <span class="speaker">[说话者昵称]</span>
-                            <span class="time">[发言时间]</span>
-                        </div>
-                        <p class="message-content">[消息内容]</p>
-                    </div>
-                    <!-- 添加更多对话消息 -->
+                    <p class="message-content">[消息内容]</p>
                 </div>
-                <div class="dialogue-highlight">[对话中的金句或亮点]</div>
-                <div class="dialogue-topic">相关话题：[某某话题]</div>
+                <div class="message">
+                    <div class="message-meta">
+                        <span class="speaker">[说话者昵称]</span>
+                        <span class="time">[发言时间]</span>
+                    </div>
+                    <p class="message-content">[消息内容]</p>
+                </div>
+                <!-- 添加更多对话消息 -->
             </div>
-            <!-- 复制上述卡片结构添加更多对话 -->
+            <div class="dialogue-highlight">[对话中的金句或亮点]</div>
+            <div class="dialogue-topic">相关话题：[某某话题]</div>
         </div>
-    </section>
+        <!-- 复制上述卡片结构添加更多对话 -->
+    </div>
+</section>
 
-    <!-- 5. 问题与解答 -->
-    <section class="questions-answers">
-        <h2>问题与解答</h2>
-        <div class="davinci-ornament">✦ ✦ ✦</div>
-        <div class="qa-container">
-            <!-- 在这里填充问答内容，达芬奇风格 -->
-            <div class="qa-card">
-                <div class="question">
-                    <div class="question-meta">
-                        <span class="asker">[提问者昵称]</span>
-                        <span class="time">[提问时间]</span>
-                    </div>
-                    <p class="question-content">[问题内容]</p>
-                    <div class="question-tags">
-                        <span class="tag">[相关标签1]</span>
-                        <span class="tag">[相关标签2]</span>
-                        <!-- 添加更多标签 -->
-                    </div>
+<!-- 5. 问题与解答 -->
+<section class="questions-answers">
+    <h2>问题与解答</h2>
+    <div class="qa-container">
+        <!-- 在这里填充问答内容，严格按照以下格式 -->
+        <div class="qa-card">
+            <div class="question">
+                <div class="question-meta">
+                    <span class="asker">[提问者昵称]</span>
+                    <span class="time">[提问时间]</span>
                 </div>
-                <div class="answers">
-                    <div class="answer">
-                        <div class="answer-meta">
-                            <span class="responder">[回答者昵称]</span>
-                            <span class="time">[回答时间]</span>
-                            <span class="accepted-badge">最佳回答</span>
-                        </div>
-                        <p class="answer-content">[回答内容]</p>
-                    </div>
-                    <!-- 添加更多回答 -->
+                <p class="question-content">[问题内容]</p>
+                <div class="question-tags">
+                    <span class="tag">[相关标签1]</span>
+                    <span class="tag">[相关标签2]</span>
+                    <!-- 添加更多标签 -->
                 </div>
             </div>
-            <!-- 复制上述卡片结构添加更多问答 -->
+            <div class="answers">
+                <div class="answer">
+                    <div class="answer-meta">
+                        <span class="responder">[回答者昵称]</span>
+                        <span class="time">[回答时间]</span>
+                        <span class="accepted-badge">最佳回答</span>
+                    </div>
+                    <p class="answer-content">[回答内容]</p>
+                </div>
+                <!-- 添加更多回答 -->
+            </div>
         </div>
-    </section>
+        <!-- 复制上述卡片结构添加更多问答 -->
+    </div>
+</section>
 
-    <!-- 6. 群内数据可视化 -->
-    <section class="analytics">
-        <h2>群内数据可视化</h2>
-        <div class="davinci-ornament">✦ ✦ ✦</div>
+<!-- 6. 群内数据可视化 -->
+<section class="analytics">
+    <h2>群内数据可视化</h2>
 
-        <!-- 话题热度 -->
-        <h3>话题热度</h3>
-        <div class="heatmap-container">
-            <!-- 在这里填充话题热度数据，达芬奇风格 -->
-            <div class="heat-item">
-                <div class="heat-topic">[话题名称]</div>
-                <div class="heat-percentage">[百分比]%</div>
-                <div class="heat-bar">
-                    <div class="heat-fill" style="width: [百分比]%; background-color: var(--accent-blue);"></div>
-                </div>
-                <div class="heat-count">[数量]条消息</div>
+    <!-- 话题热度 -->
+    <h3>话题热度</h3>
+    <div class="heatmap-container">
+        <!-- 在这里填充话题热度数据，严格按照以下格式 -->
+        <div class="heat-item">
+            <div class="heat-topic">[话题名称]</div>
+            <div class="heat-percentage">[百分比]%</div>
+            <div class="heat-bar">
+                <div class="heat-fill" style="width: [百分比]%; background-color: #2c5545;"></div>
             </div>
-            <!-- 复制上述结构添加更多热度项 -->
-            <div class="heat-item">
-                <div class="heat-topic">[话题名称]</div>
-                <div class="heat-percentage">[百分比]%</div>
-                <div class="heat-bar">
-                    <div class="heat-fill" style="width: [百分比]%; background-color: var(--accent-red);"></div>
-                </div>
-                <div class="heat-count">[数量]条消息</div>
-            </div>
-            <!-- 可用的颜色: var(--accent-blue), var(--accent-red), var(--accent-gold), var(--accent-green), var(--accent-sepia) -->
+            <div class="heat-count">[数量]条消息</div>
         </div>
-
-        <!-- 话唠榜 -->
-        <h3>话唠榜</h3>
-        <div class="participants-container">
-            <!-- 在这里填充话唠榜数据，达芬奇风格 -->
-            <div class="participant-item">
-                <div class="participant-rank">1</div>
-                <div class="participant-info">
-                    <div class="participant-name">[群友昵称]</div>
-                    <div class="participant-count">[数量]条消息</div>
-                    <div class="participant-characteristics">
-                        <span class="characteristic">[特点1]</span>
-                        <span class="characteristic">[特点2]</span>
-                        <!-- 添加更多特点 -->
-                    </div>
-                    <div class="participant-words">
-                        <span class="word">[常用词1]</span>
-                        <span class="word">[常用词2]</span>
-                        <!-- 添加更多常用词 -->
-                    </div>
-                </div>
+        <!-- 复制上述结构添加更多热度项，每项使用不同颜色 -->
+        <div class="heat-item">
+            <div class="heat-topic">[话题名称]</div>
+            <div class="heat-percentage">[百分比]%</div>
+            <div class="heat-bar">
+                <div class="heat-fill" style="width: [百分比]%; background-color: #8b4513;"></div>
             </div>
-            <!-- 复制上述结构添加更多参与者 -->
+            <div class="heat-count">[数量]条消息</div>
         </div>
+        <!-- 可用的颜色: #2c5545, #8b4513, #235789, #a63a3a, #d9a566, #606c38 -->
+    </div>
 
-        <!-- 熬夜冠军 -->
-        <h3>熬夜冠军</h3>
-        <div class="night-owls-container">
-            <!-- 在这里填充熬夜冠军数据，达芬奇风格 -->
-            <div class="night-owl-item">
-                <div class="owl-crown" title="熬夜冠军">👑</div>
-                <div class="owl-info">
-                    <div class="owl-name">[熬夜冠军昵称]</div>
-                    <div class="owl-title">[熬夜冠军称号]</div>
-                    <div class="owl-time">最晚活跃时间：[时间]</div>
-                    <div class="owl-messages">深夜消息数：[数量]</div>
-                    <div class="owl-last-message">[最后一条深夜消息内容]</div>
-                    <div class="owl-note">注：熬夜时段定义为23:00-06:00，已考虑不同时区</div>
+    <!-- 话唠榜 -->
+    <h3>话唠榜</h3>
+    <div class="participants-container">
+        <!-- 在这里填充话唠榜数据，严格按照以下格式 -->
+        <div class="participant-item">
+            <div class="participant-rank">1</div>
+            <div class="participant-info">
+                <div class="participant-name">[群友昵称]</div>
+                <div class="participant-count">[数量]条消息</div>
+                <div class="participant-characteristics">
+                    <span class="characteristic">[特点1]</span>
+                    <span class="characteristic">[特点2]</span>
+                    <!-- 添加更多特点 -->
+                </div>
+                <div class="participant-words">
+                    <span class="word">[常用词1]</span>
+                    <span class="word">[常用词2]</span>
+                    <!-- 添加更多常用词 -->
                 </div>
             </div>
         </div>
-    </section>
+        <!-- 复制上述结构添加更多参与者 -->
+    </div>
 
-    <!-- 7. 词云 -->
-    <section class="word-cloud">
-        <h2>热门词云</h2>
-        <div class="davinci-ornament">✦ ✦ ✦</div>
-        <div class="cloud-container">
-            <!-- 词云容器 - 达芬奇草图风格 -->
-            <div class="cloud-wordcloud" id="word-cloud">
-                <!-- 为每个词创建一个span元素，使用绝对定位放置 -->
-                <!-- 以下是一些示例，请根据实际内容生成40-60个词 -->
-                <span class="cloud-word" style="left: 300px; top: 120px; font-size: 38px; color: var(--accent-blue); transform: rotate(-15deg); font-weight: bold;">[关键词1]</span>
-
-                <span class="cloud-word" style="left: 180px; top: 150px; font-size: 32px; color: var(--accent-red); transform: rotate(5deg); font-weight: bold;">[关键词2]</span>
-
-                <span class="cloud-word" style="left: 400px; top: 180px; font-size: 28px; color: var(--accent-gold); transform: rotate(-5deg);">[关键词3]</span>
-
-                <span class="cloud-word" style="left: 250px; top: 220px; font-size: 24px; color: var(--accent-green); transform: rotate(10deg);">[关键词4]</span>
-
-                <span class="cloud-word" style="left: 350px; top: 90px; font-size: 22px; color: var(--accent-sepia); transform: rotate(-10deg);">[关键词5]</span>
-
-                <!-- 继续添加更多词 -->
-            </div>
-
-            <div class="cloud-legend">
-                <div class="legend-item">
-                    <span class="legend-color" style="background-color: var(--accent-blue);"></span>
-                    <span class="legend-label">[分类1] 相关词汇</span>
-                </div>
-                <div class="legend-item">
-                    <span class="legend-color" style="background-color: var(--accent-red);"></span>
-                    <span class="legend-label">[分类2] 相关词汇</span>
-                </div>
-                <div class="legend-item">
-                    <span class="legend-color" style="background-color: var(--accent-gold);"></span>
-                    <span class="legend-label">[分类3] 相关词汇</span>
-                </div>
+    <!-- 熬夜冠军 -->
+    <h3>熬夜冠军</h3>
+    <div class="night-owls-container">
+        <!-- 在这里填充熬夜冠军数据，严格按照以下格式 -->
+        <div class="night-owl-item">
+            <div class="owl-crown" title="熬夜冠军">👑</div>
+            <div class="owl-info">
+                <div class="owl-name">[熬夜冠军昵称]</div>
+                <div class="owl-title">[熬夜冠军称号]</div>
+                <div class="owl-time">最晚活跃时间：[时间]</div>
+                <div class="owl-messages">深夜消息数：[数量]</div>
+                <div class="owl-last-message">[最后一条深夜消息内容]</div>
+                <div class="owl-note">注：熬夜时段定义为23:00-06:00，已考虑不同时区</div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- 8. 页面底部 -->
-    <footer>
-        <p>数据来源：[群名称]聊天记录</p>
-        <p>生成时间：<span class="generation-time">[当前时间]</span></p>
-        <p>统计周期：[日期] [时间范围]</p>
-        <p class="disclaimer">免责声明：本报告内容基于群聊公开讨论，如有不当内容或侵权问题请联系管理员处理。</p>
-    </footer>
+<!-- 7. 词云 -->
+<section class="word-cloud">
+    <h2>热门词云</h2>
+    <div class="cloud-container">
+        <!-- 词云容器 - 现在是云朵样式 -->
+        <div class="cloud-wordcloud" id="word-cloud">
+            <!-- 为每个词创建一个span元素，使用绝对定位放置 -->
+            <!-- 以下是一些示例，请根据实际内容生成40-60个词 -->
+            <span class="cloud-word" style="left: 300px; top: 120px; font-size: 38px; color: #2c5545; transform: rotate(-15deg); font-weight: bold;">[关键词1]</span>
+
+            <span class="cloud-word" style="left: 180px; top: 150px; font-size: 32px; color: #8b4513; transform: rotate(5deg); font-weight: bold;">[关键词2]</span>
+
+            <span class="cloud-word" style="left: 400px; top: 180px; font-size: 28px; color: #a63a3a; transform: rotate(-5deg);">[关键词3]</span>
+
+            <span class="cloud-word" style="left: 250px; top: 220px; font-size: 24px; color: #d9a566; transform: rotate(10deg);">[关键词4]</span>
+
+            <span class="cloud-word" style="left: 350px; top: 90px; font-size: 22px; color: #235789; transform: rotate(-10deg);">[关键词5]</span>
+
+            <!-- 继续添加更多词 -->
+        </div>
+
+        <div class="cloud-legend">
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #2c5545;"></span>
+                <span class="legend-label">[分类1] 相关词汇</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #8b4513;"></span>
+                <span class="legend-label">[分类2] 相关词汇</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #235789;"></span>
+                <span class="legend-label">[分类3] 相关词汇</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 8. 页面底部 -->
+<footer>
+    <p>数据来源：[群名称]聊天记录</p>
+    <p>生成时间：<span class="generation-time">[当前时间]</span></p>
+    <p>统计周期：[日期] [时间范围]</p>
+    <p class="disclaimer">免责声明：本报告内容基于群聊公开讨论，如有不当内容或侵权问题请联系管理员处理。</p>
+</footer>
 
 
-</body></html>
+</body>
+</html>
 
 ```
